@@ -22,10 +22,12 @@
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/gametitle_recycler.xml" value="0.12335359675785208" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/spinner_item.xml" value="0.15260416666666668" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/title_dialog.xml" value="0.152" />
+        <entry key="..\:/Users/Shin&amp;Song/AndroidStudioProjects/GAMA/app/src/main/res/layout/console_recycler.xml" value="0.1875" />
+        <entry key="..\:/Users/Shin&amp;Song/AndroidStudioProjects/GAMA/app/src/main/res/layout/title_dialog.xml" value="0.1875" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
