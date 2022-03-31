@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">GAMA</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playstation5">PlayStation 5</string>
+    <string name="user_name_change_button_desc">사용자 변경 버튼</string>
+    <string name="user_own_console_count_text">콘솔수</string>
+    <string name="user_own_title_count_text">타이틀수</string>
+    <string name="user_spend_money_text">소요비용</string>
+
+    <!-- Add Console Fragment용 strings -->
+    <string name="console_title_text">콘솔 추가</string>
+    <string name="console_name_text">콘&#160;솔&#160;명</string>
+    <string name="console_buy_price_text">구매가격</string>
+    <string name="console_buy_date_text">구&#160;입&#160;일</string>
+    <string name="console_memo_text">메&#160;&#160;&#160;&#160;모</string>
+    <string name="console_add_save_button_text">저&#160;&#160;장</string>
+    <string name="console_add_cancel_button_text">취&#160;&#160;소</string>
+    <string name="console_price_unit">원</string>
+    <string name="console_price_edittext_normaltext">구매하신 가격을 입력하세요.</string>
+    <string name="console_date_edittext_hinttext">구매하신 일자를 입력하세요.</string>
+    <string name="console_memo_hinttext">간단한 메모를 입력하세요.</string>
+
+    <string name="console_desc_maker_text">제작사</string>
+    <string name="console_desc_launch_date_text">발매일</string>
+    <string name="console_desc_price_text">정&#160;&#160;&#160;&#160;가</string>
+    <string name="console_desc_spec_text">스&#160;&#160;&#160;&#160;펙</string>
+    <string name="console_desc_spec_text_for_temp">CPU&#160;:&#160;380Hz,&#160;RAM&#160;:&#160;1GB\nHDD&#160;:&#160;128GB</string>
+
+    <!-- Add GameTitle Fragment용 strings -->
+    <string name="title_title_text">게임타이틀 추가</string>
+    <string name="title_name_text">게&#160;임&#160;명</string>
+    <string name="title_maker_text">제&#160;작&#160;사</string>
+    <string name="title_launch_date_text">발&#160;매&#160;일</string>
+    <string name="title_buy_date_text">구&#160;매&#160;일</string>
+    <string name="title_buy_price_text">구&#160;매&#160;가\n&#160;(원)</string>
+    <string name="title_rating_text">평&#160;&#160;&#160;&#160;점</string>
+    <string name="title_memo_text">메&#160;&#160;&#160;&#160;모</string>
+    <string name="title_console_name_text">기&#160;종&#160;명</string>
+    <string name="title_genre_text">장&#160;&#160;&#160;&#160;르</string>
+
+    <string name="title_rating_edit_text">0&#160;~&#160;9</string>
+    <string name="title_genre_edit_text">장르를 입력하세요.</string>
+    <string name="title_game_title_edit_text">게임타이틀명을 입력하세요.</string>
+    <string name="title_maker_edit_text">제작사를 입력하세요.</string>
+    <string name="title_memo_edit_text">소감 등 메모를 입력하세요.</string>
+    <string name="title_buy_date_edit_text">구입하신 날짜를 입력하세요.</string>
+    <string name="title_buy_price_edit_text">구입하신 가격을 입력하세요.</string>
+
+    <!-- GameTitle Dialog용 strings -->
+    <string name="titledialog_title_text">게임타이틀&#160;세부사항</string>
+
+
+</resources>

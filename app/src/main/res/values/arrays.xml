@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="console_list">
+        <item>PLAYSTATION 5</item>
+        <item>PLAYSTATION 4</item>
+        <item>PLAYSTATION 3</item>
+        <item>PLAYSTATION 2</item>
+        <item>PLAYSTATION 1</item>
+
+        <item>XBOX Series X</item>
+        <item>XBOX Series S</item>
+        <item>XBOX ONE X</item>
+        <item>XBOX ONE S</item>
+        <item>XBOX ONE</item>
+        <item>XBOX 360</item>
+        <item>XBOX</item>
+
+        <item>Switch Lite</item>
+        <item>Switch</item>
+        <item>3DS</item>
+        <item>2DS</item>
+        <item>Wii U</item>
+        <item>Wii</item>
+
+    </string-array>
+
+    <string-array name="console_imagepath">
+        <item>playstation5</item>
+        <item>playstation4</item>
+        <item>playstation3</item>
+        <item>playstation2</item>
+        <item>playstation1</item>
+
+        <item>xboxseriesx</item>
+        <item>xboxseriess</item>
+        <item>xboxonex</item>
+        <item>xboxones</item>
+        <item>xboxone</item>
+        <item>xbox360</item>
+        <item>xbox</item>
+
+        <item>nintendo_switchlite</item>
+        <item>nintendo_switch</item>
+        <item>nintendo_3ds</item>
+        <item>nintendo_2ds</item>
+        <item>wiiu</item>
+        <item>wii</item>
+
+    </string-array>
+
+    <string-array name="console_maker">
+        <item>Sony</item>
+        <item>Sony</item>
+        <item>Sony</item>
+        <item>Sony</item>
+        <item>Sony</item>
+
+        <item>Microsoft</item>
+        <item>Microsoft</item>
+        <item>Microsoft</item>
+        <item>Microsoft</item>
+        <item>Microsoft</item>
+        <item>Microsoft</item>
+        <item>Microsoft</item>
+
+        <item>Nintendo</item>
+        <item>Nintendo</item>
+        <item>Nintendo</item>
+        <item>Nintendo</item>
+        <item>Nintendo</item>
+        <item>Nintendo</item>
+
+    </string-array>
+
+    <string-array name="console_date">
+        <item>2020. 11. 12</item>
+        <item>2013. 11. 15</item>
+        <item>2006. 11. 19</item>
+        <item>2000. 03. 04</item>
+        <item>1994. 12. 03</item>
+
+        <item>2020. 11. 10</item>
+        <item>2020. 11. 10</item>
+        <item>2017. 11. 07</item>
+        <item>2016. 08. 02</item>
+        <item>2013. 11. 22</item>
+        <item>2005. 11. 22</item>
+        <item>2001. 11. 15</item>
+
+        <item>2019. 09. 20</item>
+        <item>2017. 03. 03</item>
+        <item>2013. 10. 12</item>
+        <item>2011. 02. 24</item>
+        <item>2012. 11. 18</item>
+        <item>2006. 11. 19</item>
+
+    </string-array>
+
+    <string-array name="console_spec">
+
+        <item>CPU : AMD Zen2 8 Cores, 3.5GHz\nGPU : AMD RNDA2 2.23GHz\nRAM : GDDR6 SGRAM 16GB \nHDD : TLC 825GB NVMe SSD</item>
+        <item>CPU : AMD Jaguar 8 Cores, 1.6GHz\nGPU : AMD Next-Generation Radeon 1.84TFLOPS(800MHz)\nRAM : GDDR5 SDRAM 8GB\nHDD : 500GB(or 1TB)</item>
+        <item>CPU : Cell-Broadband Engine 64Bits 3.2 GHz\nGPU : NVIDIA Reality Synthesizer 500 MHz\nRAM : 256 MB 400 MHz Rambus XDR DRAM\n</item>
+        <item>CPU : Emotion Engine 128Bits, 294.912MHz\nGPU : Graphics Synthesizer 147.456 MHz\nRAM : 32 MB Direct Rambus DRAM\n</item>
+        <item>CPU : 32-bit MIPS (33MHz)\nGPU : 32-bit R800A (33MHz)\nRAM : 2MB(VRAM: 1MB)\n</item>
+
+        <item>CPU : AMD ZEN 2 8 Cores, 3.6GHz\nGPU : AMD RDNA 2 1.825GHz\nRAM : GDDR6 SGRAM 16 GB\nHDD : Western Digital SN530 SSD TLC+SLC 1TB</item>
+        <item>CPU : AMD ZEN 2 8 Cores, 3.4GHz\nGPU : AMD RDNA 2 1.565GHz\nRAM : GDDR6 SGRAM 10 GB\nHDD : Western Digital SN530 SSD TLC+SLC 512GB</item>
+        <item>CPU : AMD Jaguar 8 Cores, 2.3GHz\nGPU : AMD Radeon GCN 4.0\nRAM : 12GB\nHDD : 1TB</item>
+        <item>CPU : AMD Jaguar 8 Cores, 1.6GHz\nGPU : AMD Durango 2 GCN 1.0\nRAM : GDDR5 SDRAM 8GB\nHDD : 500GB, 1TB, 2TB</item>
+        <item>CPU : AMD Jaguar 8 Cores, 1.75GHz\nGPU : AMD GCN 853MHz\nRAM : 8GB 1066MHz DDR3 SDRAM + 32MB ESRAM\nHDD : 500GB, 1TB</item>
+        <item>CPU : IBM Xenon 3.2GHz\nGPU : ATI Xenos 500MHz\nRAM : 512MB 700Mhz GDDR3 RAM + 10MB EDRAM\nHDD : 20~500GB</item>
+        <item>CPU : Intel Pentium III 1.6GHz\nGPU : NVIDIA XGPU 233MHz\nRAM : 64MB 200MHz DDR SDRAM\nHDD : 8 or 10 GB</item>
+
+        <item>CPU : ARM 4 Cortex-A57 + ARM 4 Cortex-A53 cores @ 1.02 GHz\nGPU : NVIDIA Tegra</item>
+        <item>CPU : ARM 4 Cortex-A57 + ARM 4 Cortex-A53 cores @ 1.02 GHz\nGPU : NVIDIA Tegra</item>
+        <item>CPU : Dual-Core ARM11 268Mhz\nGPU : DMP PICA200 GPU 268MHz\nRAM : 128MB FCRAM + 6MB(VRAM)\n</item>
+        <item>No Information</item>
+        <item>No Information</item>
+        <item>No Information</item>
+    </string-array>
+
+    <string-array name="genre">
+        <item>액션</item>
+        <item>슈팅</item>
+        <item>어드벤처</item>
+        <item>시뮬레이션</item>
+        <item>롤플레잉</item>
+        <item>스포츠</item>
+        <item>FPS</item>
+        <item>레이싱</item>
+        <item>기타</item>
+    </string-array>
+</resources>

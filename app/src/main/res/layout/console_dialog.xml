@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9"
+    tools:context=".AddConsoleFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_10_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_bottom"
+            android:fontFamily="@font/notosans_bold"
+            android:gravity="center"
+            android:text="내 콘솔 세부사항"
+            android:textSize="20sp" />
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/closeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:text="닫기"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_10_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_80"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/close_button_blue_square" />
+
+    <ImageButton
+        android:id="@+id/modifyButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/modify_button_blue"
+        android:text="수정"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:text="삭제"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_50"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_90"
+        app:srcCompat="@drawable/delete_button" />
+
+    <ImageButton
+        android:id="@+id/saveButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/save_button_red_short"
+        android:text="@string/console_add_save_button_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
+
+    <ImageButton
+        android:id="@+id/cancelButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/cancel_button_blue_short"
+        android:text="@string/console_add_cancel_button_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_50"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/v_guideline_25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/v_guideline_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/v_guideline_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <TextView
+        android:id="@+id/wonTextView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/console_price_unit"
+        android:textColor="@color/black"
+        app:autoSizeMaxTextSize="18sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_58"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_80"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_10_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.58" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_66"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+
+    <TextView
+        android:id="@+id/consoleNameText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/console_name_text"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_18"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_10_2" />
+
+    <TextView
+        android:id="@+id/consoleBuyPriceText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/console_buy_price_text"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_58"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_50" />
+
+    <EditText
+        android:id="@+id/consoleBuyPriceEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/console_price_edittext_normaltext"
+        android:inputType="number"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_58"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_80"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_25"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_50" />
+
+    <TextView
+        android:id="@+id/consoleBuyDateText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/console_buy_date_text"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_66"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
+
+    <EditText
+        android:id="@+id/consoleBuyDateEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/console_date_edittext_hinttext"
+        android:inputType="date"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_66"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_80"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_25"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
+
+    <TextView
+        android:id="@+id/consoleMemoText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/console_memo_text"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_90"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_66" />
+
+    <Spinner
+        android:id="@+id/consoleNameDropdown"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/console_name_text"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_25"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_10_2" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/consoleDescConstraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_18">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/v_sub_guideline_50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/consoleDescImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/playstation5" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/v_sub_guideline_50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:weightSum="7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/v_sub_guideline_50"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="@string/console_desc_maker_text"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=":"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/consoleDescMakerTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:text="null"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="@string/console_desc_launch_date_text"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=":"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+
+                <TextView
+                    android:id="@+id/consoleDescLaunchDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:text="null"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/console_desc_spec_text"
+                    android:textAlignment="center"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/consoleDescSpecTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="textMultiLine|textImeMultiLine"
+                    android:lineSpacingExtra="8sp"
+                    android:padding="8dp"
+                    android:text="@string/console_desc_spec_text_for_temp"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="6sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/showDatePickerButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="6dp"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/date_picker_3_gray"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_66"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_80"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
+
+    <EditText
+        android:id="@+id/consoleMemoEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/console_memo_hinttext"
+        android:inputType="textMultiLine|text"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_25"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_66" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
