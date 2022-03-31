@@ -56,7 +56,7 @@ public class GameTitleRecyclerViewAdapter extends RecyclerView.Adapter<GameTitle
         UserTitleInfo userTitleInfo=list.get(position);
         holder.gameTitleNameTV.setText(userTitleInfo.getName());
 
-        if(getItemCount()==1){
+        if(position==(getItemCount()-1)){
             Glide.with(context).load(MainActivity.getImage(userTitleInfo.getImagePath())).into(holder.gameTitleImageIV);
         }else{
             File imgFile=new File(context.getCacheDir()+"/"+userTitleInfo.getImagePath());

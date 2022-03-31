@@ -147,6 +147,7 @@ public class AddTitleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 addTitle();
+                ((MainActivity)getActivity()).setFrament(MainActivity.NormalFRAGMENT);
             }
         });
 

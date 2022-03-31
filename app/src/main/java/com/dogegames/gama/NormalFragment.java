@@ -224,7 +224,21 @@ public class NormalFragment extends Fragment {
         titleDialog=new TitleDialog(getContext(), list.get(pos));
         titleDialog.show();
 
-        //추가로 삭제 리스너, 아이템 리스너 동작을 만들어야한다.
+
+        //추가로 삭제 리스너, 아이템 리스너 동작을 코딩해야한다.
+        titleDialog.setOnItemSaveListener(new TitleDialog.OnItemSaveListener() {
+            @Override
+            public void onSaveItem() {
+
+            }
+        });
+
+        titleDialog.setOnItemDeleteListener(new TitleDialog.OnItemDeleteListener() {
+            @Override
+            public void onDeleteItem() {
+
+            }
+        });
     }
 
 

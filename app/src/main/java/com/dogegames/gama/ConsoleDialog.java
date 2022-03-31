@@ -195,7 +195,7 @@ public class ConsoleDialog extends Dialog {
 
     void setConsoleDropdown(){
         String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);//new String[]{"Playstation 1","Playstation 2","Playstation 3","XBOX","XBOX 360"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,consoleItems);
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item,consoleItems);
         consoleNameDropdown.setAdapter(adapter);
     }
 

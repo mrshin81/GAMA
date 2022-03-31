@@ -48,7 +48,7 @@
     <string name="title_buy_price_edit_text">구입하신 가격을 입력하세요.</string>
 
     <!-- GameTitle Dialog용 strings -->
-    <string name="titledialog_title_text">게임타이틀&#160;세부사항2222</string>
+    <string name="titledialog_title_text">게임타이틀&#160;세부사항</string>
 
 
 </resources>
