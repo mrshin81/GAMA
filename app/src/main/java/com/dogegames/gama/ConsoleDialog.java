@@ -36,7 +36,7 @@ public class ConsoleDialog extends Dialog {
     }
 
     public interface OnItemSaveListener{
-        void onSaveItem();
+        void onSaveItem(String consoleName, String imagePath);
     }
 
     public OnItemDeleteListener mListener=null;
@@ -155,7 +155,7 @@ public class ConsoleDialog extends Dialog {
 
                     setModifyMode(false);
                     consoleDBHelper.modifyRecord(ConsoleDBHelper.TABLE_NAME, consoleNameDropdown.getSelectedItem().toString(),consoleImagePath[consoleNameDropdown.getSelectedItemPosition()], Integer.valueOf(consoleBuyPriceET.getText().toString()),convertStringToDate(consoleBuyDateET.getText().toString()),consoleMemoET.getText().toString(), userConsoleInfo.getId());
-                    sListener.onSaveItem();
+                    sListener.onSaveItem(consoleNameDropdown.getSelectedItem().toString(), consoleImagePath[consoleNameDropdown.getSelectedItemPosition()]);
                 }
             }
         });

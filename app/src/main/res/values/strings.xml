@@ -29,7 +29,7 @@
 
     <!-- Add GameTitle Fragment용 strings -->
     <string name="title_title_text">게임타이틀 추가</string>
-    <string name="title_name_text">게&#160;임&#160;명</string>
+    <string name="title_name_text">게임이름</string>
     <string name="title_maker_text">제&#160;작&#160;사</string>
     <string name="title_launch_date_text">발&#160;매&#160;일</string>
     <string name="title_buy_date_text">구&#160;매&#160;일</string>
@@ -41,7 +41,7 @@
 
     <string name="title_rating_edit_text">0&#160;~&#160;9</string>
     <string name="title_genre_edit_text">장르를 입력하세요.</string>
-    <string name="title_game_title_edit_text">게임타이틀명을 입력하세요.</string>
+    <string name="title_game_title_edit_text">타이틀 이름을 입력하세요.</string>
     <string name="title_maker_edit_text">제작사를 입력하세요.</string>
     <string name="title_memo_edit_text">소감 등 메모를 입력하세요.</string>
     <string name="title_buy_date_edit_text">구입하신 날짜를 입력하세요.</string>

@@ -1,19 +1,36 @@
 package com.dogegames.gama;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +57,8 @@ public class NormalFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String imagePathFromTitleDialog;
+
     private ItemTouchHelper mItemTouchHelper;
 
     private View normalFragmentView;
@@ -53,6 +72,10 @@ public class NormalFragment extends Fragment {
     private TitleDialog titleDialog;
 
     Handler mHandler=new Handler();
+
+    ActivityResultLauncher<Intent> resultLauncherForTitleDialog;
+
+    static public String imagePickerReturnValue;
 
     public NormalFragment() {
         // Required empty public constructor
@@ -97,9 +120,61 @@ public class NormalFragment extends Fragment {
         //setConsoleRecyclerView();
         setConsoleRecyclerViewFromDB(consoleDBHelper);//DB로부터 데이터 불러오기를 Background Thread로 동작시킨다.
         setGameTitleRecyclerViewFromDB(titleDBHelper);
-
+        setImagePickerCallback();
         // Inflate the layout for this fragment
         return normalFragmentView;
+    }
+
+    private void setImagePickerCallback(){
+        //registerForAcitityResult 콜백함수 등록
+        resultLauncherForTitleDialog=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                Log.d(TAG,"resultCode : "+result.getResultCode());
+
+                if(result.getResultCode()== Activity.RESULT_OK){
+                    Uri fileUri=result.getData().getData();
+
+                    //Intent intent=result.getData();
+
+                    //String imagePath=intent.getStringExtra("imagePath");
+
+                    Log.d(TAG,"imagePath : "+imagePathFromTitleDialog);
+
+                    /*Bitmap bitmap=null;
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            bitmap=ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(), fileUri));
+                        }else{
+                            bitmap= MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), fileUri);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+
+                    /*File tempFile=new File(getActivity().getCacheDir(),imagePathFromTitleDialog);
+
+                    try{
+                        tempFile.createNewFile();
+                        FileOutputStream out=new FileOutputStream(tempFile);
+                        bitmap.compress(Bitmap.CompressFormat.PNG,25,out);
+                        out.close();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }*/
+                     /*try{
+                                Glide.with(getContext()).load(fileUri).into(titleIV);
+                                titleIV.setScaleType(ImageView.ScaleType.FIT_XY);
+                            } catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }*/
+                }else if(result.getResultCode()==Activity.RESULT_CANCELED){
+                    Log.d(TAG,"imagePicker canceled");
+                }
+            }
+        });
     }
     
     void saveConsoleData(){
@@ -177,26 +252,6 @@ public class NormalFragment extends Fragment {
         thread.start();
     }
 
-
-    /*
-    class ConsoleRVHandler extends Handler{
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            ArrayList<UserConsoleInfo> list= (ArrayList<UserConsoleInfo>) msg.obj;
-            setConsoleRecyclerView(list);
-        }
-    }
-
-    class ConsoleDialogHandler extends Handler{
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            ArrayList<UserConsoleInfo> list= (ArrayList<UserConsoleInfo>) msg.obj;
-            showConsoleDialog(list,msg.arg1);
-        }
-    }*/
-
     private void showConsoleDialog(ArrayList<UserConsoleInfo> list, int pos){
         consoleDialog=new ConsoleDialog(getContext(), list.get(pos));
         consoleDialog.show();
@@ -211,32 +266,44 @@ public class NormalFragment extends Fragment {
 
         consoleDialog.setOnItemSaveListener(new ConsoleDialog.OnItemSaveListener() {
             @Override
-            public void onSaveItem() {
-                consoleRecyclerViewAdapter.list.get(pos).setName(list.get(pos).getName());
-                consoleRecyclerViewAdapter.list.get(pos).setImagePath(list.get(pos).getImagePath());
+            public void onSaveItem(String consoleName, String imagePath) {
+                consoleRecyclerViewAdapter.list.get(pos).setName(consoleName);
+                consoleRecyclerViewAdapter.list.get(pos).setImagePath(imagePath);
+                //consoleRecyclerViewAdapter.notifyDataSetChanged();
                 consoleRecyclerViewAdapter.notifyItemChanged(pos);
-                consoleRecyclerViewAdapter.notifyDataSetChanged();
+                //consoleRecyclerViewAdapter.notifyItemRangeChanged(0, gameTitleRecyclerViewAdapter.getItemCount());
+                Log.d(TAG,"onSaveItem Completed..., ConsoleDialog, "+list.get(pos).getName());
             }
         });
     }
 
     private void showTitleDialog(ArrayList<UserTitleInfo> list, int pos){
-        titleDialog=new TitleDialog(getContext(), list.get(pos));
-        titleDialog.show();
+        TitleDialogFragment titleDialogFragment=TitleDialogFragment.newInstance("TitleDialogFragment",getContext(),list.get(pos));
+        titleDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
+        Log.d(TAG,"showTitleDialog");
+        //titleDialog=new TitleDialog(getContext(), list.get(pos));
+        //titleDialog.show();
 
+        /*titleDialogFragment.setOnShowDatePickerListener(new TitleDialog.OnShowDatePickerListener() {
+            @Override
+            public void onShowDatePicker() {
+
+            }
+        });*/
 
         //추가로 삭제 리스너, 아이템 리스너 동작을 코딩해야한다.
-        titleDialog.setOnItemSaveListener(new TitleDialog.OnItemSaveListener() {
+        titleDialogFragment.setOnItemSaveListener(new TitleDialog.OnItemSaveListener() {
             @Override
-            public void onSaveItem() {
-
+            public void onSaveItem(String gameTitleName, String imagePath) {
+                gameTitleRecyclerViewAdapter.list.get(pos).setName(gameTitleName);
+                gameTitleRecyclerViewAdapter.list.get(pos).setImagePath(imagePath);
+                gameTitleRecyclerViewAdapter.notifyItemChanged(pos);
             }
         });
 
-        titleDialog.setOnItemDeleteListener(new TitleDialog.OnItemDeleteListener() {
+        titleDialogFragment.setOnItemDeleteListener(new TitleDialog.OnItemDeleteListener() {
             @Override
             public void onDeleteItem() {
-
             }
         });
     }

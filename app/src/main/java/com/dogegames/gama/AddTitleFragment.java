@@ -1,6 +1,7 @@
 package com.dogegames.gama;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -14,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -34,10 +37,13 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -146,8 +152,14 @@ public class AddTitleFragment extends Fragment {
         addTitleBTN.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                addTitle();
-                ((MainActivity)getActivity()).setFrament(MainActivity.NormalFRAGMENT);
+                if(!titleNameET.getText().toString().equals("")){
+                    addTitle();
+                    ((MainActivity)getActivity()).setFrament(MainActivity.NormalFRAGMENT);
+                    Log.d(TAG,"addTitle Completed.."+titleNameET.getText());
+                }else{
+                    Toast.makeText(getContext(), "게임이름은 반드시 입력되어야 합니다.\n게임타이틀 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"addTitle Button Clicked, but titleName Empty." );
+                }
             }
         });
 
@@ -167,6 +179,13 @@ public class AddTitleFragment extends Fragment {
                 }else if(result.getResultCode()==Activity.RESULT_CANCELED){
                     Log.d(TAG,"imagePicker canceled");
                 }
+            }
+        });
+
+        showDatePickerBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePicker();
             }
         });
 
@@ -227,11 +246,10 @@ public class AddTitleFragment extends Fragment {
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 File tempFile=new File(getActivity().getCacheDir(),fileName);
                 try{
-                    tempFile.createNewFile();
-                    FileOutputStream out=new FileOutputStream(tempFile);
+                    OutputStream out=new FileOutputStream(tempFile);
                     bitmap.compress(Bitmap.CompressFormat.PNG,25,out);
                     out.close();
-                } catch (Exception e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -299,13 +317,13 @@ public class AddTitleFragment extends Fragment {
             memo = "NONE";
         }
 
-        Date launchDate;
+        Date buyDate;
 
         try {
-            launchDate = sdf.parse(buyDateET.getText().toString());
+            buyDate = sdf.parse(buyDateET.getText().toString());
         } catch (ParseException e) {
             e.printStackTrace();
-            launchDate = new Date();
+            buyDate = new Date();
         }
 
         String imgFileName = id + ".png";
@@ -313,6 +331,38 @@ public class AddTitleFragment extends Fragment {
 
         String imagePath = imgFileName;//getActivity().getCacheDir() + "/" + imgFileName;//사진 찍던지 사진첩에서 선택해서 저장된 리소스를 활용해야한다.
 
-        titleDBHelper.insertRecord(TitleDBHelper.TABLE_NAME, titleNameET.getText().toString(), platform, makerName, launchDate, imagePath, genre, memoET.getText().toString(), Integer.valueOf(price),Integer.valueOf(rating), titleDBHelper.getNo(), id);
+        titleDBHelper.insertRecord(TitleDBHelper.TABLE_NAME, titleNameET.getText().toString(), platform, makerName, buyDate, imagePath, genre, memoET.getText().toString(), Integer.valueOf(price),Integer.valueOf(rating), titleDBHelper.getNo(), id);
+    }
+
+    void showDatePicker(){
+        DatePickerDialog.OnDateSetListener mDateSetListener=
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String yyyyMMdd=year+"-"+(month+1)+"-"+dayOfMonth;
+                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                        Log.d(TAG,"onDateSet");
+                        try {
+                            Date to=sdf.parse(yyyyMMdd);
+                            buyDateET.setText(sdf.format(to));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+        int year, month, day;
+        String strDate=buyDateET.getText().toString();
+        String[] strDateSplit=strDate.split("-");
+        try{
+            year=Integer.valueOf(strDateSplit[0]);
+            month=Integer.valueOf(strDateSplit[1])-1;
+            day=Integer.valueOf(strDateSplit[2]);
+        }catch (Exception e){
+            Calendar calendar=Calendar.getInstance();
+            year=calendar.get(Calendar.YEAR);
+            month=calendar.get(Calendar.MONTH);
+            day=calendar.get(Calendar.DATE);
+        }
+        new DatePickerDialog(getContext(),mDateSetListener,year,month,day).show();
     }
 }

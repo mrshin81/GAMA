@@ -68,6 +68,8 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.34" />
 
+
+
     <ImageButton
         android:id="@+id/closeButtonInTitleDialog"
         android:layout_width="0dp"
@@ -159,10 +161,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/nintendo_2ds" />
+                app:srcCompat="@drawable/image_icon" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/imagePickerButtonInTitleDialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="4dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/camera_icon"
+        app:layout_constraintBottom_toBottomOf="@id/h_guideline_titledialog_42"
+        app:layout_constraintEnd_toEndOf="@id/v_guideline_titledialog_50"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_titledialog_32"
+        app:layout_constraintTop_toTopOf="@id/h_guideline_titledialog_34" />
 
     <TextView
         android:id="@+id/textView11"

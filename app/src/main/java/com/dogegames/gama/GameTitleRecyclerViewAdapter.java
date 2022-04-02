@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,13 +59,15 @@ public class GameTitleRecyclerViewAdapter extends RecyclerView.Adapter<GameTitle
         holder.gameTitleNameTV.setText(userTitleInfo.getName());
 
         if(position==(getItemCount()-1)){
-            Glide.with(context).load(MainActivity.getImage(userTitleInfo.getImagePath())).into(holder.gameTitleImageIV);
+            Glide.with(context).load(MainActivity.getImage(userTitleInfo.getImagePath())).apply(RequestOptions.skipMemoryCacheOf(true)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(holder.gameTitleImageIV);
+
+            //Glide.with(context).load(MainActivity.getImage(userTitleInfo.getImagePath())).into(holder.gameTitleImageIV);
         }else{
             File imgFile=new File(context.getCacheDir()+"/"+userTitleInfo.getImagePath());
             if(!imgFile.exists()){
-                Glide.with(context).load(R.drawable.image_icon).into(holder.gameTitleImageIV);
+                Glide.with(context).load(R.drawable.image_icon).apply(RequestOptions.skipMemoryCacheOf(true)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(holder.gameTitleImageIV);
             }else{
-                Glide.with(context).load(imgFile).into(holder.gameTitleImageIV);
+                Glide.with(context).load(imgFile).apply(RequestOptions.skipMemoryCacheOf(true)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(holder.gameTitleImageIV);
             }
         }
     }

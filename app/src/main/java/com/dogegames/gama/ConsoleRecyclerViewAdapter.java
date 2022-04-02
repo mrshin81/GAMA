@@ -139,6 +139,8 @@ public class ConsoleRecyclerViewAdapter extends RecyclerView.Adapter<ConsoleRecy
                 Log.d(TAG,"==========, position : "+position+", selectedItemPosition : "+selectedItemPosition);
             }
         }
+
+        Log.d(TAG,"onBindViewHolder executed."+", userConsoleInfo.getName() : "+userConsoleInfo.getName()+", userConsoleInfo.getImagePath() : "+userConsoleInfo.getImagePath());
     }
 
     @Override
