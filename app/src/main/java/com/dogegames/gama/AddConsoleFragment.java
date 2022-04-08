@@ -114,7 +114,7 @@ public class AddConsoleFragment extends Fragment {
         showDatePickerBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDatePicker();
+                ((Commons)getActivity().getApplication()).showDatePicker(buyDateET);
             }
         });
 
@@ -163,7 +163,9 @@ public class AddConsoleFragment extends Fragment {
             }
         });
 
-        setConsoleDropdown();
+        //Spinner 아이템 셋팅
+        String[] consoleItems=getResources().getStringArray(R.array.console_list);
+        ((Commons)getActivity().getApplication()).setDropdown(consoleItems,consoleNameDropdown);
 
         consoleNameDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -178,43 +180,6 @@ public class AddConsoleFragment extends Fragment {
         });
         // Inflate the layout for this fragment
         return view;
-    }
-
-    void setConsoleDropdown(){
-        String[] consoleItems=getResources().getStringArray(R.array.console_list);//new String[]{"Playstation 1","Playstation 2","Playstation 3","XBOX","XBOX 360"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item,consoleItems);
-        consoleNameDropdown.setAdapter(adapter);
-    }
-
-    void showDatePicker(){
-        DatePickerDialog.OnDateSetListener datePickerListener=new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String yyyyMMdd=year+"-"+(month+1)+"-"+dayOfMonth;
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    Date to=sdf.parse(yyyyMMdd);
-                    buyDateET.setText(sdf.format(to));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        int year, month, day;
-        String strDate=buyDateET.getText().toString();
-        String[] strDateSplit=strDate.split("-");
-        try{
-            year=Integer.valueOf(strDateSplit[0]);
-            month=Integer.valueOf(strDateSplit[1])-1;
-            day=Integer.valueOf(strDateSplit[2]);
-        }catch (Exception e){
-            Calendar calendar=Calendar.getInstance();
-            year=calendar.get(Calendar.YEAR);
-            month=calendar.get(Calendar.MONTH);
-            day=calendar.get(Calendar.DATE);
-        }
-        new DatePickerDialog(getContext(),datePickerListener,year,month,day).show();
     }
 
     void setConsoleSpec(int selectedConsole){

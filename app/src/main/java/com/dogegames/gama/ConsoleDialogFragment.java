@@ -1,18 +1,14 @@
 package com.dogegames.gama;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,16 +16,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-
-public class ConsoleDialog extends Dialog {
-
-    final static String TAG="ConsoleDialog";
+public class ConsoleDialogFragment extends DialogFragment {
+    final static String TAG="ConsoleDialogFragment";
 
     public interface OnItemDeleteListener{
         void onDeleteItem();
@@ -39,22 +34,20 @@ public class ConsoleDialog extends Dialog {
         void onSaveItem(String consoleName, String imagePath);
     }
 
-    public OnItemDeleteListener mListener=null;
+    public ConsoleDialogFragment.OnItemDeleteListener mListener=null;
 
-    public OnItemSaveListener sListener=null;
+    public ConsoleDialogFragment.OnItemSaveListener sListener=null;
 
-    public void setOnItemDeleteListener(OnItemDeleteListener listener){
+    public void setOnItemDeleteListener(ConsoleDialogFragment.OnItemDeleteListener listener){
         this.mListener=listener;
     }
 
-    public void setOnItemSaveListener(OnItemSaveListener listener){
+    public void setOnItemSaveListener(ConsoleDialogFragment.OnItemSaveListener listener){
         this.sListener=listener;
     }
 
-    DatePickerDialog datePickerDialog=null;
-
-    private Context context;
-    private UserConsoleInfo userConsoleInfo;
+    static private Context context;
+    static private UserConsoleInfo userConsoleInfo;
     ImageButton modifyBTN;
     ImageButton cancelBTN;
     ImageButton closeBTN;
@@ -76,39 +69,43 @@ public class ConsoleDialog extends Dialog {
 
     boolean isModifyMode=false;
 
-    public ConsoleDialog(@NonNull Context context, UserConsoleInfo userConsoleInfo) {
-        super(context);
-        this.context=context;
-        setOwnerActivity((Activity)context);
-        this.userConsoleInfo=userConsoleInfo;
+
+    public static ConsoleDialogFragment newInstance(Context context1, UserConsoleInfo userConsoleInfo1){
+        ConsoleDialogFragment fragment=new ConsoleDialogFragment();
+        context=context1;
+        userConsoleInfo=userConsoleInfo1;
+        return fragment;
     }
 
+    @NonNull
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.console_dialog);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        View view=getActivity().getLayoutInflater().inflate(R.layout.console_dialog_fragment,null);
+        builder.setView(view);
 
+        modifyBTN=view.findViewById(R.id.modifyButtonInConsoleDialogFragment);
+        cancelBTN=view.findViewById(R.id.cancelButtonInConsoleDialogFragment);
+        saveBTN=view.findViewById(R.id.saveButtonInConsoleDialogFragment);
+        deleteBTN=view.findViewById(R.id.deleteButtonInConsoleDialogFragment);
+        datePickerBTN=view.findViewById(R.id.showDatePickerButtonInConsoleDialogFragment);
+        closeBTN=view.findViewById(R.id.closeButtonInConsoleDialogFragment);
 
-        modifyBTN=findViewById(R.id.modifyButton);
-        cancelBTN=findViewById(R.id.cancelButton);
-        saveBTN=findViewById(R.id.saveButton);
-        deleteBTN=findViewById(R.id.deleteButton);
-        datePickerBTN=findViewById(R.id.showDatePickerButton);
+        consoleNameDropdown=view.findViewById(R.id.consoleNameDropdownInConsoleDialogFragment);
+        consoleBuyPriceET=view.findViewById(R.id.consoleBuyPriceEditTextInConsoleDialogFragment);
+        consoleBuyDateET=view.findViewById(R.id.consoleBuyDateEditTextInConsoleDialogFragment);
+        consoleMemoET=view.findViewById(R.id.consoleMemoEditTextInConsoleDialogFragment);
+        consoleDescMakerTV=view.findViewById(R.id.consoleDescMakerTextViewInConsoleDialogFragment);
+        consoleDescDateTV=view.findViewById(R.id.consoleDescLaunchDateTextViewInConsoleDialogFragment);
+        consoleDescSpecTV=view.findViewById(R.id.consoleDescSpecTextViewInConsoleDialogFragment);
+        consoleDescIV=view.findViewById(R.id.consoleDescImageViewInConsoleDialogFragment);
 
-        consoleNameDropdown=findViewById(R.id.consoleNameDropdown);
-        consoleBuyPriceET=findViewById(R.id.consoleBuyPriceEditText);
-        consoleBuyDateET=findViewById(R.id.consoleBuyDateEditText);
-        consoleMemoET=findViewById(R.id.consoleMemoEditText);
-        consoleDescMakerTV=findViewById(R.id.consoleDescMakerTextView);
-        consoleDescDateTV=findViewById(R.id.consoleDescLaunchDateTextView);
-        consoleDescSpecTV=findViewById(R.id.consoleDescSpecTextView);
-        consoleDescIV=findViewById(R.id.consoleDescImageView);
-
-        setConsoleDropdown();
+        String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);
+        ((Commons)context.getApplicationContext()).setDropdown(consoleItems,consoleNameDropdown);
 
         consoleNameDropdown.setSelection(userConsoleInfo.getConsoleNumber());
         consoleBuyPriceET.setText(String.valueOf(userConsoleInfo.getPrice()));
-        consoleBuyDateET.setText(MainActivity.convertDateToString(userConsoleInfo.getDate()));
+        consoleBuyDateET.setText(((Commons)getActivity().getApplication()).convertDateToString(userConsoleInfo.getDate()));
         consoleMemoET.setText(userConsoleInfo.getMemo());
 
         consoleNameDropdown.setEnabled(false);
@@ -119,9 +116,6 @@ public class ConsoleDialog extends Dialog {
 
         consoleDBHelper=ConsoleDBHelper.getInstance(getContext());
 
-        setDialogSize();
-
-        closeBTN=findViewById(R.id.closeButton);
         closeBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +137,7 @@ public class ConsoleDialog extends Dialog {
         datePickerBTN.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                showDatePicker();
+                ((Commons)context.getApplicationContext()).showDatePicker(consoleBuyDateET);
             }
         });
 
@@ -154,7 +148,7 @@ public class ConsoleDialog extends Dialog {
                     String[] consoleImagePath=getContext().getResources().getStringArray(R.array.console_imagepath);
 
                     setModifyMode(false);
-                    consoleDBHelper.modifyRecord(ConsoleDBHelper.TABLE_NAME, consoleNameDropdown.getSelectedItem().toString(),consoleImagePath[consoleNameDropdown.getSelectedItemPosition()], Integer.valueOf(consoleBuyPriceET.getText().toString()),convertStringToDate(consoleBuyDateET.getText().toString()),consoleMemoET.getText().toString(), userConsoleInfo.getId());
+                    consoleDBHelper.modifyRecord(ConsoleDBHelper.TABLE_NAME, consoleNameDropdown.getSelectedItem().toString(),consoleImagePath[consoleNameDropdown.getSelectedItemPosition()], Integer.valueOf(consoleBuyPriceET.getText().toString()),((Commons)getActivity().getApplication()).convertStringToDate(consoleBuyDateET.getText().toString()),consoleMemoET.getText().toString(), userConsoleInfo.getId());
                     sListener.onSaveItem(consoleNameDropdown.getSelectedItem().toString(), consoleImagePath[consoleNameDropdown.getSelectedItemPosition()]);
                 }
             }
@@ -191,22 +185,16 @@ public class ConsoleDialog extends Dialog {
         });
 
         setConsoleSpec(consoleNameDropdown.getSelectedItemPosition());
+
+
+        return builder.create();
     }
 
-    void setConsoleDropdown(){
-        String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);//new String[]{"Playstation 1","Playstation 2","Playstation 3","XBOX","XBOX 360"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item,consoleItems);
-        consoleNameDropdown.setAdapter(adapter);
-    }
-
-    void setDialogSize(){
-        Display display=getOwnerActivity().getWindowManager().getDefaultDisplay();
-        Point size=new Point();
-        display.getSize(size);
-        Window window=getWindow();
-        int x=(int)(size.x*0.9f);
-        int y=(int)(size.y*0.8f);
-        window.setLayout(x,y);
+    @Override
+    public void onResume() {
+        super.onResume();
+        //setDialogSize();
+        ((Commons)getActivity().getApplication()).setDialogSize(getActivity(), getDialog(), 0.9f, 0.8f);
     }
 
     void setModifyMode(boolean isModifyMode){
@@ -240,19 +228,6 @@ public class ConsoleDialog extends Dialog {
         this.isModifyMode=isModifyMode;
     }
 
-
-
-    Date convertStringToDate(String strDate){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        Date date=new Date();
-        try {
-            date=sdf.parse(strDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
     void setConsoleSpec(int selectedConsole){
         String[] consoleMaker=getContext().getResources().getStringArray(R.array.console_maker);
         String[] consoleDate=getContext().getResources().getStringArray(R.array.console_date);
@@ -265,35 +240,14 @@ public class ConsoleDialog extends Dialog {
         consoleDescIV.setImageResource(MainActivity.getImageId(getContext(),consoleImagePath[selectedConsole]));
     }
 
-    void showDatePicker(){
-        DatePickerDialog.OnDateSetListener mDateSetListener=
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String yyyyMMdd=year+"-"+(month+1)+"-"+dayOfMonth;
-                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-                        Log.d(TAG,"onDateSet");
-                        try {
-                            Date to=sdf.parse(yyyyMMdd);
-                            consoleBuyDateET.setText(sdf.format(to));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-        int year, month, day;
-        String strDate=consoleBuyDateET.getText().toString();
-        String[] strDateSplit=strDate.split("-");
-        try{
-            year=Integer.valueOf(strDateSplit[0]);
-            month=Integer.valueOf(strDateSplit[1])-1;
-            day=Integer.valueOf(strDateSplit[2]);
-        }catch (Exception e){
-            Calendar calendar=Calendar.getInstance();
-            year=calendar.get(Calendar.YEAR);
-            month=calendar.get(Calendar.MONTH);
-            day=calendar.get(Calendar.DATE);
+    /*Date convertStringToDate(String strDate){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date date=new Date();
+        try {
+            date=sdf.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        new DatePickerDialog(context,mDateSetListener,year,month,day).show();
-    }
+        return date;
+    }*/
 }

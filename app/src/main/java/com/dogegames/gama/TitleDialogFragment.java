@@ -89,14 +89,14 @@ public class TitleDialogFragment extends DialogFragment {
         void onSaveItem(String gameTitleName, String imagePath);
     }
 
-    public TitleDialog.OnItemDeleteListener dListener=null;
-    public TitleDialog.OnItemSaveListener sListener=null;
+    public TitleDialogFragment.OnItemDeleteListener dListener=null;
+    public TitleDialogFragment.OnItemSaveListener sListener=null;
 
-    public void setOnItemDeleteListener(TitleDialog.OnItemDeleteListener listener){
+    public void setOnItemDeleteListener(TitleDialogFragment.OnItemDeleteListener listener){
         this.dListener=listener;
     }
 
-    public void setOnItemSaveListener(TitleDialog.OnItemSaveListener listener){
+    public void setOnItemSaveListener(TitleDialogFragment.OnItemSaveListener listener){
         this.sListener=listener;
     }
 
@@ -144,8 +144,11 @@ public class TitleDialogFragment extends DialogFragment {
         cancelBTN=view.findViewById(R.id.cancelButtonInTitleDialogFragment);
         datePickerBTN=view.findViewById(R.id.showDatePickerForTitleDialogFragmentButton);
 
-        setConsoleDropdown();
-        setGenreDropdown();
+        String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);
+        ((Commons)getActivity().getApplication()).setDropdown(consoleItems, consoleNameDropdown);
+
+        String[] genreItems=getContext().getResources().getStringArray(R.array.genre);
+        ((Commons)getActivity().getApplication()).setDropdown(genreItems,genreDropdown);
 
         gameTitleNameET.setText(userTitleInfo.getName());
         Log.d(TAG,"userTitleInfo.getImagePath() : "+getImageFullPath(userTitleInfo.getImagePath()));
@@ -182,7 +185,7 @@ public class TitleDialogFragment extends DialogFragment {
         datePickerBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDatePicker();
+                ((Commons)getActivity().getApplication()).showDatePicker(buyDateET);
             }
         });
 
@@ -239,7 +242,8 @@ public class TitleDialogFragment extends DialogFragment {
                     }
 
                     String imgFileName = userTitleInfo.getImagePath();
-                    saveBitmapToPNG(imgFileName);//사진첩에서 고른 사진을 내부저장소에 저장
+                    saveImageViewToPNG_AutoRefresh(imgFileName);//사진첩에서 고른 사진을 내부저장소에 저장
+                    //((Commons)getActivity().getApplication()).saveImageViewToPNG(gameTitleIV,imgFileName);
 
                     titleDBHelper.modifyRecord(TitleDBHelper.TABLE_NAME, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(), genre, memo, Integer.valueOf(price), Integer.valueOf(rating), userTitleInfo.getId());
                     //if(sListener!=null) sListener.onSaveItem(titleName,userTitleInfo.getImagePath());
@@ -288,7 +292,7 @@ public class TitleDialogFragment extends DialogFragment {
         return builder.create();//super.onCreateDialog(savedInstanceState);
     }
 
-    private void saveBitmapToPNG(String fileName){//Bitmap bitmap, String fileName){
+    private void saveImageViewToPNG_AutoRefresh(String fileName){//Bitmap bitmap, String fileName){
         BitmapDrawable drawable= (BitmapDrawable) gameTitleIV.getDrawable();
         Bitmap bitmap=drawable.getBitmap();
 
@@ -305,7 +309,7 @@ public class TitleDialogFragment extends DialogFragment {
                 }
             }
             @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
+            public void onLoadCleared(@Nullable Drawable placeholder) {//titledialogfragment가 닫히면 자동으로 recyclerview 아이템들을 리프레시 한다.
                 String titleName=gameTitleNameET.getText().toString();
                 if(titleName.equals("")){
                     titleName="null";
@@ -318,30 +322,7 @@ public class TitleDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setDialogSize();
-
-    }
-
-    void setDialogSize(){
-        Display display=getActivity().getWindowManager().getDefaultDisplay();
-        Point size=new Point();
-        display.getSize(size);
-        int x=(int)(size.x*0.9f);
-        int y=(int)(size.y*0.8f);
-
-        getDialog().getWindow().setLayout(x,y);
-    }
-
-    private void setGenreDropdown(){
-        String[] consoleItems=getContext().getResources().getStringArray(R.array.genre);
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item, consoleItems);
-        genreDropdown.setAdapter(adapter);
-    }
-
-    void setConsoleDropdown(){
-        String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);//new String[]{"Playstation 1","Playstation 2","Playstation 3","XBOX","XBOX 360"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item,consoleItems);
-        consoleNameDropdown.setAdapter(adapter);
+        ((Commons)getActivity().getApplication()).setDialogSize(getActivity(), getDialog(), 0.9f, 0.8f);
     }
 
     void setModifyMode(boolean isModifyMode){
@@ -381,37 +362,6 @@ public class TitleDialogFragment extends DialogFragment {
             deleteBTN.setVisibility(View.GONE);
         }
         this.isModifyMode=isModifyMode;
-    }
-
-    void showDatePicker(){
-        DatePickerDialog.OnDateSetListener mDateSetListener=new DatePickerDialog.OnDateSetListener(){
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                String yyyyMMdd=year+"-"+(month+1)+"-"+dayOfMonth;
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-                Log.d(TAG,"onDateSet");
-                try {
-                    Date to=sdf.parse(yyyyMMdd);
-                    buyDateET.setText(sdf.format(to));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        int year, month, day;
-        String strDate=buyDateET.getText().toString();
-        String[] strDateSplit=strDate.split("-");
-        try{
-            year=Integer.valueOf(strDateSplit[0]);
-            month=Integer.valueOf(strDateSplit[1])-1;
-            day=Integer.valueOf(strDateSplit[2]);
-        }catch (Exception e){
-            Calendar calendar=Calendar.getInstance();
-            year=calendar.get(Calendar.YEAR);
-            month=calendar.get(Calendar.MONTH);
-            day=calendar.get(Calendar.DATE);
-        }
-        new DatePickerDialog(context,mDateSetListener,year,month,day).show();
     }
 
     public String getImageFullPath(String imagePath){

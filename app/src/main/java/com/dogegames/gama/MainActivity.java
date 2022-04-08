@@ -1,6 +1,7 @@
 package com.dogegames.gama;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,9 +12,12 @@ import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -26,7 +30,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -150,11 +156,7 @@ public class MainActivity extends AppCompatActivity {
         return id;
     }
 
-    //Date 객체를 String으로 변환 메서드
-    static public String convertDateToString(Date date){
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
-    }
+
 
     static public int getImageId(Context context, String imageName){
         int id=context.getResources().getIdentifier("drawable/"+imageName,null,context.getPackageName());
@@ -185,5 +187,4 @@ public class MainActivity extends AppCompatActivity {
 
         return drawableResourceId;
     }
-
 }

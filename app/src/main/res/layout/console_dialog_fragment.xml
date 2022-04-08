@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f9f9f9"
-    tools:context=".AddConsoleFragment">
+    tools:context=".ConsoleDialogFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -29,7 +33,7 @@
     </FrameLayout>
 
     <ImageButton
-        android:id="@+id/closeButton"
+        android:id="@+id/closeButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
@@ -43,7 +47,7 @@
         app:srcCompat="@drawable/close_button_blue_square" />
 
     <ImageButton
-        android:id="@+id/modifyButton"
+        android:id="@+id/modifyButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
@@ -56,7 +60,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
 
     <ImageButton
-        android:id="@+id/deleteButton"
+        android:id="@+id/deleteButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
@@ -69,7 +73,7 @@
         app:srcCompat="@drawable/delete_button" />
 
     <ImageButton
-        android:id="@+id/saveButton"
+        android:id="@+id/saveButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
@@ -83,7 +87,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
 
     <ImageButton
-        android:id="@+id/cancelButton"
+        android:id="@+id/cancelButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
@@ -118,7 +122,7 @@
         app:layout_constraintGuide_percent="0.8" />
 
     <TextView
-        android:id="@+id/wonTextView"
+        android:id="@+id/wonTextViewInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -203,7 +207,7 @@
         app:layout_constraintGuide_percent="1" />
 
     <TextView
-        android:id="@+id/consoleNameText"
+        android:id="@+id/consoleNameTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -219,7 +223,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_10_2" />
 
     <TextView
-        android:id="@+id/consoleBuyPriceText"
+        android:id="@+id/consoleBuyPriceTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -235,7 +239,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_50" />
 
     <EditText
-        android:id="@+id/consoleBuyPriceEditText"
+        android:id="@+id/consoleBuyPriceEditTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ems="10"
@@ -249,7 +253,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_50" />
 
     <TextView
-        android:id="@+id/consoleBuyDateText"
+        android:id="@+id/consoleBuyDateTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -265,7 +269,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
 
     <EditText
-        android:id="@+id/consoleBuyDateEditText"
+        android:id="@+id/consoleBuyDateEditTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ems="10"
@@ -279,7 +283,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
 
     <TextView
-        android:id="@+id/consoleMemoText"
+        android:id="@+id/consoleMemoTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -295,7 +299,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_66" />
 
     <Spinner
-        android:id="@+id/consoleNameDropdown"
+        android:id="@+id/consoleNameDropdownInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/console_name_text"
@@ -305,7 +309,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_10_2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/consoleDescConstraintLayout"
+        android:id="@+id/consoleDescConstraintLayoutInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
@@ -325,7 +329,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/consoleDescImageView"
+                android:id="@+id/consoleDescImageViewInConsoleDialogFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
@@ -387,7 +391,7 @@
                     app:autoSizeTextType="uniform" />
 
                 <TextView
-                    android:id="@+id/consoleDescMakerTextView"
+                    android:id="@+id/consoleDescMakerTextViewInConsoleDialogFragment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
@@ -434,7 +438,7 @@
                     app:autoSizeTextType="uniform" />
 
                 <TextView
-                    android:id="@+id/consoleDescLaunchDateTextView"
+                    android:id="@+id/consoleDescLaunchDateTextViewInConsoleDialogFragment"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
@@ -476,7 +480,7 @@
                 android:weightSum="10">
 
                 <TextView
-                    android:id="@+id/consoleDescSpecTextView"
+                    android:id="@+id/consoleDescSpecTextViewInConsoleDialogFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -495,7 +499,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
-        android:id="@+id/showDatePickerButton"
+        android:id="@+id/showDatePickerButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="6dp"
@@ -509,7 +513,7 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
 
     <EditText
-        android:id="@+id/consoleMemoEditText"
+        android:id="@+id/consoleMemoEditTextInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ems="10"
@@ -523,3 +527,4 @@
         app:layout_constraintTop_toTopOf="@id/h_guideline_66" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

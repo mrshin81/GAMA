@@ -68,9 +68,6 @@ public class NormalFragment extends Fragment {
     ConsoleRecyclerViewAdapter consoleRecyclerViewAdapter;
     GameTitleRecyclerViewAdapter gameTitleRecyclerViewAdapter;
 
-    private ConsoleDialog consoleDialog;
-    private TitleDialog titleDialog;
-
     Handler mHandler=new Handler();
 
     ActivityResultLauncher<Intent> resultLauncherForTitleDialog;
@@ -117,6 +114,7 @@ public class NormalFragment extends Fragment {
                              Bundle savedInstanceState) {
         normalFragmentView=inflater.inflate(R.layout.fragment_normal, container, false);
         //saveConsoleData();
+        Log.d(TAG,"onCreateView, NormalFragment");
         //setConsoleRecyclerView();
         setConsoleRecyclerViewFromDB(consoleDBHelper);//DB로부터 데이터 불러오기를 Background Thread로 동작시킨다.
         setGameTitleRecyclerViewFromDB(titleDBHelper);
@@ -253,10 +251,13 @@ public class NormalFragment extends Fragment {
     }
 
     private void showConsoleDialog(ArrayList<UserConsoleInfo> list, int pos){
-        consoleDialog=new ConsoleDialog(getContext(), list.get(pos));
-        consoleDialog.show();
 
-        consoleDialog.setOnItemDeleteListener(new ConsoleDialog.OnItemDeleteListener() {
+        ConsoleDialogFragment consoleDialogFragment=ConsoleDialogFragment.newInstance(getContext(),list.get(pos));
+        consoleDialogFragment.show(getActivity().getSupportFragmentManager(),"dialog");
+        Log.d(TAG,"showConsoleDialog");
+
+
+        consoleDialogFragment.setOnItemDeleteListener(new ConsoleDialogFragment.OnItemDeleteListener() {
             @Override
             public void onDeleteItem() {
                 consoleRecyclerViewAdapter.deleteItem(pos);
@@ -264,7 +265,7 @@ public class NormalFragment extends Fragment {
             }
         });
 
-        consoleDialog.setOnItemSaveListener(new ConsoleDialog.OnItemSaveListener() {
+        consoleDialogFragment.setOnItemSaveListener(new ConsoleDialogFragment.OnItemSaveListener() {
             @Override
             public void onSaveItem(String consoleName, String imagePath) {
                 consoleRecyclerViewAdapter.list.get(pos).setName(consoleName);
@@ -284,24 +285,18 @@ public class NormalFragment extends Fragment {
         //titleDialog=new TitleDialog(getContext(), list.get(pos));
         //titleDialog.show();
 
-        /*titleDialogFragment.setOnShowDatePickerListener(new TitleDialog.OnShowDatePickerListener() {
-            @Override
-            public void onShowDatePicker() {
-
-            }
-        });*/
-
         //추가로 삭제 리스너, 아이템 리스너 동작을 코딩해야한다.
-        titleDialogFragment.setOnItemSaveListener(new TitleDialog.OnItemSaveListener() {
+        titleDialogFragment.setOnItemSaveListener(new TitleDialogFragment.OnItemSaveListener() {
             @Override
             public void onSaveItem(String gameTitleName, String imagePath) {
+                gameTitleName="gameTitleName";
                 gameTitleRecyclerViewAdapter.list.get(pos).setName(gameTitleName);
                 gameTitleRecyclerViewAdapter.list.get(pos).setImagePath(imagePath);
                 gameTitleRecyclerViewAdapter.notifyItemChanged(pos);
             }
         });
 
-        titleDialogFragment.setOnItemDeleteListener(new TitleDialog.OnItemDeleteListener() {
+        titleDialogFragment.setOnItemDeleteListener(new TitleDialogFragment.OnItemDeleteListener() {
             @Override
             public void onDeleteItem() {
             }

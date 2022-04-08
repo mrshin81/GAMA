@@ -128,8 +128,14 @@ public class AddTitleFragment extends Fragment {
         titleDBHelper=TitleDBHelper.getInstance(getContext());
 
         loadImageFromFile("test.png");
-        setPlatformDropdown();
-        setGenreDropdown();
+        //setPlatformDropdown();
+        String[] consoleItems=getResources().getStringArray(R.array.console_list);
+        ((Commons)getActivity().getApplication()).setDropdown(consoleItems,platformDropdown);
+
+        String[] genreItems=getResources().getStringArray(R.array.genre);
+        ((Commons)getActivity().getApplication()).setDropdown(genreItems,genreDropdown);
+        //setGenreDropdown();
+
         //getImageOrientation("test.png");
 
         closeBTN.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +191,7 @@ public class AddTitleFragment extends Fragment {
         showDatePickerBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDatePicker();
+                ((Commons)getActivity().getApplication()).showDatePicker(buyDateET);
             }
         });
 
@@ -235,41 +241,6 @@ public class AddTitleFragment extends Fragment {
         Matrix matrix=new Matrix();
         matrix.postRotate(degree);
         return Bitmap.createBitmap(src,0,0,src.getWidth(),src.getHeight(),matrix,true);
-    }
-
-    private void saveBitmapToPNG(String fileName){//Bitmap bitmap, String fileName){
-        BitmapDrawable drawable= (BitmapDrawable) titleIV.getDrawable();
-        Bitmap bitmap=drawable.getBitmap();
-
-        Glide.with(this).load(bitmap).into(new CustomTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                File tempFile=new File(getActivity().getCacheDir(),fileName);
-                try{
-                    OutputStream out=new FileOutputStream(tempFile);
-                    bitmap.compress(Bitmap.CompressFormat.PNG,25,out);
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
-
-            }
-        });
-    }
-
-    private void setPlatformDropdown(){
-        String[] consoleItems=getResources().getStringArray(R.array.console_list);
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item, consoleItems);
-        platformDropdown.setAdapter(adapter);
-    }
-
-    private void setGenreDropdown(){
-        String[] consoleItems=getResources().getStringArray(R.array.genre);
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext(), R.layout.spinner_item, consoleItems);
-        genreDropdown.setAdapter(adapter);
     }
 
     private void addTitle() {
@@ -327,42 +298,11 @@ public class AddTitleFragment extends Fragment {
         }
 
         String imgFileName = id + ".png";
-        saveBitmapToPNG(imgFileName);//사진첩에서 고른 사진을 내부저장소에 저장
-
+        //saveBitmapToPNG(imgFileName);//사진첩에서 고른 사진을 내부저장소에 저장
+        ((Commons)getActivity().getApplication()).saveImageViewToPNG(titleIV,imgFileName);
         String imagePath = imgFileName;//getActivity().getCacheDir() + "/" + imgFileName;//사진 찍던지 사진첩에서 선택해서 저장된 리소스를 활용해야한다.
 
         titleDBHelper.insertRecord(TitleDBHelper.TABLE_NAME, titleNameET.getText().toString(), platform, makerName, buyDate, imagePath, genre, memoET.getText().toString(), Integer.valueOf(price),Integer.valueOf(rating), titleDBHelper.getNo(), id);
     }
 
-    void showDatePicker(){
-        DatePickerDialog.OnDateSetListener mDateSetListener=
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String yyyyMMdd=year+"-"+(month+1)+"-"+dayOfMonth;
-                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-                        Log.d(TAG,"onDateSet");
-                        try {
-                            Date to=sdf.parse(yyyyMMdd);
-                            buyDateET.setText(sdf.format(to));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-        int year, month, day;
-        String strDate=buyDateET.getText().toString();
-        String[] strDateSplit=strDate.split("-");
-        try{
-            year=Integer.valueOf(strDateSplit[0]);
-            month=Integer.valueOf(strDateSplit[1])-1;
-            day=Integer.valueOf(strDateSplit[2]);
-        }catch (Exception e){
-            Calendar calendar=Calendar.getInstance();
-            year=calendar.get(Calendar.YEAR);
-            month=calendar.get(Calendar.MONTH);
-            day=calendar.get(Calendar.DATE);
-        }
-        new DatePickerDialog(getContext(),mDateSetListener,year,month,day).show();
-    }
 }
