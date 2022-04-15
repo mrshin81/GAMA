@@ -3,6 +3,7 @@ package com.dogegames.gama;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -35,7 +36,7 @@ public class TitleDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         db=sqLiteDatabase;
-        createTable(TABLE_NAME);
+        //createTable(TABLE_NAME);
     }
 
     @Override
@@ -55,15 +56,67 @@ public class TitleDBHelper extends SQLiteOpenHelper {
         db.execSQL(insertRecord_query);
     }
 
-    public Cursor selectRecord(){
-        String selectDB_query="SELECT * FROM "+TABLE_NAME+" ORDER BY ordering DESC";
-        Cursor cursor=db.rawQuery(selectDB_query,null);
+    public Cursor selectRecord(String tableName){
+        String selectDB_query="SELECT * FROM "+tableName+" ORDER BY ordering DESC";
+        //String selectDB_query="SELECT * FROM "+"PLAYSTATION_5 UNION SELECT * FROM PLAYSTATION_2";
 
+        Cursor cursor;
+        try{
+            Log.d(TAG,"selectRecord exe query");
+            cursor=db.rawQuery(selectDB_query,null);
+        }catch (SQLiteException e){
+            cursor=null;//db.rawQuery(selectDB_query,null);
+        }
         return cursor;
     }
 
-    public int getNo(){
-        String getNo_query="SELECT * FROM "+TABLE_NAME;
+    public Cursor selectRecordMultipleTables(String[] tableName){
+        String select_multipleDB_query="SELECT * FROM "+tableName[0];
+        Cursor cursor;
+
+        for(int i=1;i<tableName.length;i++)
+        {
+            String query;
+            query=" UNION SELECT * FROM "+tableName[i];
+
+            select_multipleDB_query=select_multipleDB_query+query;
+        }
+
+        select_multipleDB_query=select_multipleDB_query+" ORDER BY ordering DESC";
+
+        Log.d(TAG,"selectMultipleRecord exe query "+select_multipleDB_query);
+        try{
+            cursor=db.rawQuery(select_multipleDB_query,null);
+        }catch (SQLiteException e){
+            cursor=null;//db.rawQuery(selectDB_query,null);
+        }
+        return cursor;
+    }
+
+    public Cursor getTableList(){
+        String selectDBList_query="SELECT * FROM sqlite_master";
+        Cursor cursor;
+        try{
+            cursor=db.rawQuery(selectDBList_query,null);
+        }catch (SQLiteException e){
+            cursor=null;//db.rawQuery(selectDB_query,null);
+        }
+        return cursor;
+    }
+
+    public Cursor selectOneRecord(String tableName, String id){
+        String selectOneDB_query="SELECT * FROM "+tableName+" WHERE id ="+"'"+id+"'";
+        Cursor cursor;
+        try{
+            cursor=db.rawQuery(selectOneDB_query, null);
+        }catch (SQLiteException e){
+            cursor=null;
+        }
+        return cursor;
+    }
+
+    public int getNo(String tableName){
+        String getNo_query="SELECT * FROM "+tableName;
         Cursor cursor=db.rawQuery(getNo_query,null);
 
         return cursor.getCount();

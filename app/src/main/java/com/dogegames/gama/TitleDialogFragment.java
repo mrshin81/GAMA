@@ -130,7 +130,7 @@ public class TitleDialogFragment extends DialogFragment {
         gameTitleNameET=view.findViewById(R.id.gameTitleNameForTitleDialogFragmentEditText);
         gameMakerET=view.findViewById(R.id.gameMakerNameForTitleDialogFragmentEditText);
         memoET=view.findViewById(R.id.gameMemoForTitleDialogFragmentEditText);
-        ratingET=view.findViewById(R.id.gameMemoForTitleDialogFragmentEditText);
+        ratingET=view.findViewById(R.id.gameRatingForTitleDialogFragmentEditText);
         buyPriceET=view.findViewById(R.id.gamePriceForTitleDialogFragmentEditText);
         buyDateET=view.findViewById(R.id.gameBuyDateForTitleDialogFragmentEditText);
         genreDropdown=view.findViewById(R.id.gameGenreDropdownForTitleDialogFragment);
@@ -146,12 +146,13 @@ public class TitleDialogFragment extends DialogFragment {
 
         String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);
         ((Commons)getActivity().getApplication()).setDropdown(consoleItems, consoleNameDropdown);
+        consoleNameDropdown.setSelection(userTitleInfo.getConsoleNumber());
+        Log.d(TAG,"userTitleInfo.getConsoleNumber() : "+userTitleInfo.getConsoleNumber());
 
         String[] genreItems=getContext().getResources().getStringArray(R.array.genre);
         ((Commons)getActivity().getApplication()).setDropdown(genreItems,genreDropdown);
 
         gameTitleNameET.setText(userTitleInfo.getName());
-        Log.d(TAG,"userTitleInfo.getImagePath() : "+getImageFullPath(userTitleInfo.getImagePath()));
         //Glide.with(context).load(getImageFullPath(userTitleInfo.getImagePath())).into(gameTitleIV);
         Glide.with(this).load(getImageFullPath(userTitleInfo.getImagePath())).apply(RequestOptions.skipMemoryCacheOf(true)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(gameTitleIV);
         gameTitleIV.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -245,7 +246,19 @@ public class TitleDialogFragment extends DialogFragment {
                     saveImageViewToPNG_AutoRefresh(imgFileName);//사진첩에서 고른 사진을 내부저장소에 저장
                     //((Commons)getActivity().getApplication()).saveImageViewToPNG(gameTitleIV,imgFileName);
 
-                    titleDBHelper.modifyRecord(TitleDBHelper.TABLE_NAME, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(), genre, memo, Integer.valueOf(price), Integer.valueOf(rating), userTitleInfo.getId());
+                    if(userTitleInfo.getPlatform().equals(platform)){//타이틀 수정시에 플랫폼이 수정 되지 않을경우(즉, 기존 저장된 플랫폼하고 새로 저장할 플랫폼이 같은 경우)
+                        Log.d(TAG,"equals, getPlatform() : "+userTitleInfo.getPlatform()+", platform : "+platform);
+                        String tableName=platform.replace(" ","_");
+                        titleDBHelper.modifyRecord(tableName, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(), genre, memo, Integer.valueOf(price), Integer.valueOf(rating), userTitleInfo.getId());
+                    }else{//타이틀 수정시에 플랫폼이 수정된 경우(다른 플랫폼의 테이블에 데이터 추가하고, 기존 테이블에 데이터 삭제한다.)
+                        Log.d(TAG,"Not equals, getPlatform() : "+userTitleInfo.getPlatform()+", platform : "+platform);
+                        String preTableName=userTitleInfo.getPlatform().replace(" ","_");
+                        String tableName=platform.replace(" ","_");
+                        titleDBHelper.createTable(tableName);
+                        titleDBHelper.insertRecord(tableName, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(),genre,memo,Integer.valueOf(price),Integer.valueOf(rating),titleDBHelper.getNo(tableName),userTitleInfo.getId());
+                        titleDBHelper.deleteRecord(preTableName, userTitleInfo.getId());
+                    }
+
                     //if(sListener!=null) sListener.onSaveItem(titleName,userTitleInfo.getImagePath());
                 }
             }
@@ -263,7 +276,8 @@ public class TitleDialogFragment extends DialogFragment {
         deleteBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                titleDBHelper.deleteRecord(TitleDBHelper.TABLE_NAME, userTitleInfo.getId());
+                String tableName= userTitleInfo.getPlatform().replace(" ","_");
+                titleDBHelper.deleteRecord(tableName, userTitleInfo.getId());
                 dismiss();
                 dListener.onDeleteItem();
             }
@@ -336,7 +350,10 @@ public class TitleDialogFragment extends DialogFragment {
             buyPriceET.setEnabled(false);
             buyDateET.setEnabled(false);
 
+            imagePickerBTN.setEnabled(false);
+            imagePickerBTN.setVisibility(View.INVISIBLE);
             datePickerBTN.setEnabled(false);
+            //datePickerBTN.setClickable(false);
             datePickerBTN.setImageResource(R.drawable.date_picker_3_gray);
 
             saveBTN.setVisibility(View.GONE);
@@ -353,6 +370,8 @@ public class TitleDialogFragment extends DialogFragment {
             buyPriceET.setEnabled(true);
             buyDateET.setEnabled(true);
 
+            imagePickerBTN.setEnabled(true);
+            imagePickerBTN.setVisibility(View.VISIBLE);
             datePickerBTN.setEnabled(true);
             datePickerBTN.setImageResource(R.drawable.date_picker_3);
 

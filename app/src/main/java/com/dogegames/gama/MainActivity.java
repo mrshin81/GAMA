@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -24,11 +25,15 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static final int NormalFRAGMENT=0;
     static final int AddConsoleFRAGMENT=1;
     static final int AddTitleFRAGMENT=2;
+    static final int StatisticFRAGMENT=3;
 
     //각종 UI 객체 연결 변수
     EditText userNameET;
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     TextView totalTitleCountTV;
     TextView totalBuyPriceTV;
     TextView totalConsoleCountTV;
+    BottomNavigationView bottomNavigationView;
+
     boolean isUserNameEditable=false;
 
     UserDataManager userDataManager=null;
@@ -78,6 +86,24 @@ public class MainActivity extends AppCompatActivity {
         totalBuyPriceTV=findViewById(R.id.totalBuyPriceTextView);
         totalTitleCountTV=findViewById(R.id.totalTitleCountTextView);
         totalConsoleCountTV=findViewById(R.id.totalConsoleCountTextView);
+
+        bottomNavigationView=findViewById(R.id.bottomNavView);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.item_home:
+                        setFrament(NormalFRAGMENT);
+                        break;
+                    case R.id.item_statistic:
+                        setFrament(StatisticFRAGMENT);
+                        break;
+                }
+
+                return true;
+            }
+        });
 
         searchBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,19 +140,38 @@ public class MainActivity extends AppCompatActivity {
         NormalFragment normalFragment=new NormalFragment();
         AddConsoleFragment addConsoleFragment=new AddConsoleFragment();
         AddTitleFragment addTitleFragment=new AddTitleFragment();
+        StatisticFragment statisticFragment=new StatisticFragment();
+
+        Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+
 
         switch(fragmentType){
             case NormalFRAGMENT:
-                transaction.setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_bottom);
-                transaction.replace(R.id.fragmentContainerView, normalFragment);
+                if(fragment instanceof StatisticFragment){
+                    transaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
+                    transaction.replace(R.id.fragmentContainerView, normalFragment);
+                }else if(!(fragment instanceof NormalFragment)){
+                    transaction.setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_bottom);
+                    transaction.replace(R.id.fragmentContainerView, normalFragment);
+                }
                 break;
             case AddConsoleFRAGMENT:
-                transaction.setCustomAnimations(R.anim.slide_in_bottom,R.anim.slide_out_top);
-                transaction.replace(R.id.fragmentContainerView, addConsoleFragment);
+                if(!(fragment instanceof AddConsoleFragment)) {
+                    transaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_top);
+                    transaction.replace(R.id.fragmentContainerView, addConsoleFragment);
+                }
                 break;
             case AddTitleFRAGMENT:
-                transaction.setCustomAnimations(R.anim.slide_in_bottom,R.anim.slide_out_top);
-                transaction.replace(R.id.fragmentContainerView, addTitleFragment);
+                if(!(fragment instanceof AddTitleFragment)) {
+                    transaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_top);
+                    transaction.replace(R.id.fragmentContainerView, addTitleFragment);
+                }
+                break;
+            case StatisticFRAGMENT:
+                if(!(fragment instanceof StatisticFragment)){
+                    transaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+                    transaction.replace(R.id.fragmentContainerView, statisticFragment);
+                }
                 break;
         }
         transaction.commit();
@@ -151,18 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    static public int getImageId(String imageName){
-        int id=context.getResources().getIdentifier("drawable/"+imageName,null,context.getPackageName());
-        return id;
-    }
 
-
-
-    static public int getImageId(Context context, String imageName){
-        int id=context.getResources().getIdentifier("drawable/"+imageName,null,context.getPackageName());
-        Log.d(TAG,"getIdentifier : "+id);
-        return id;
-    }
 
     static public float pxToDp(Context context, float px){
         float density=context.getResources().getDisplayMetrics().density;

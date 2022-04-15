@@ -11,19 +11,25 @@
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/image_rounded.xml" value="0.1415" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/rounded_corner_none_border.xml" value="0.1415" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/roundedcornershape.xml" value="0.1135" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/selector_button.xml" value="0.2515" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/selector_button_blue.xml" value="0.2515" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/selector_button_rounded.xml" value="0.2515" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/selector_button_rounded_blue.xml" value="0.208" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/selector_button_rounded_red.xml" value="0.208" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/drawable/wobble.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/activity_main.xml" value="0.36039360393603936" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/console_dialog.xml" value="0.25" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/console_dialog_fragment.xml" value="0.35054347826086957" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/console_recycler.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_add_console.xml" value="0.176" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_add_console.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_add_title.xml" value="0.264" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_date_picker.xml" value="0.1125" />
-        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_normal.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_normal.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/gametitle_recycler.xml" value="0.12335359675785208" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/spinner_item.xml" value="0.15260416666666668" />
         <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/title_dialog.xml" value="0.33" />
-        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/title_dialog_fragment.xml" value="0.1875" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/layout/title_dialog_fragment.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/GAMA/app/src/main/res/menu/nav.xml" value="0.2328125" />
         <entry key="..\:/Users/Shin&amp;Song/AndroidStudioProjects/GAMA/app/src/main/res/layout/console_dialog.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/Shin&amp;Song/AndroidStudioProjects/GAMA/app/src/main/res/layout/console_recycler.xml" value="0.1875" />
         <entry key="..\:/Users/Shin&amp;Song/AndroidStudioProjects/GAMA/app/src/main/res/layout/fragment_add_console.xml" value="0.1875" />

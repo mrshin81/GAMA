@@ -20,14 +20,31 @@ import java.util.ArrayList;
 public class ConsoleRecyclerViewAdapter extends RecyclerView.Adapter<ConsoleRecyclerViewAdapter.ConsoleHolder> implements ItemTouchHelperCallback.ItemTouchHelperListener {
     final static String TAG="ConsoleRVAdapter";
     public final static String SELECTED_CONSOLE_ITEM_NUMBER="SelectedConsoleItemNumber";
+    public final static String SELECTED_CONSOLE_ITEM_STRING="SelectedConsoleItemString";
 
-    public int selectedItemPosition=-1;
+    static public int selectedItemPosition=-1;
+    static public String selectedItemName;
 
     static public boolean isAnimationRunning=false;
 
     private Context context;
     View view;
     ConsoleDBHelper consoleDBHelper;
+
+    public void unselectAllItems(){
+        selectedItemPosition=-1;
+        PreferenceManager.setInt(context,SELECTED_CONSOLE_ITEM_NUMBER,selectedItemPosition);
+    }
+
+    public interface OnSelectedConsoleChangedListener{
+        void onSelectedConsoleChanged(String selectedConsoleName);
+    }
+
+    public OnSelectedConsoleChangedListener selectedConsoleChangedListener=null;
+
+    public void setOnSelectedConsoleChangedListener(OnSelectedConsoleChangedListener listener){
+        this.selectedConsoleChangedListener=listener;
+    }
 
     public interface OnItemClickListener{
         void onItemClick(View v,int pos);
@@ -59,6 +76,10 @@ public class ConsoleRecyclerViewAdapter extends RecyclerView.Adapter<ConsoleRecy
                 selectedItemPosition=to_position;
             }
             PreferenceManager.setInt(context,SELECTED_CONSOLE_ITEM_NUMBER,selectedItemPosition);
+
+            String consoleNameConverted=list.get(to_position).getName().replace(" ","_");
+
+            PreferenceManager.setString(context,SELECTED_CONSOLE_ITEM_STRING,consoleNameConverted);
 
             activeAnimation(viewHolder,true);
 
@@ -97,6 +118,8 @@ public class ConsoleRecyclerViewAdapter extends RecyclerView.Adapter<ConsoleRecy
         this.list=list;
         this.context=context;
         this.selectedItemPosition=PreferenceManager.getInt(context,SELECTED_CONSOLE_ITEM_NUMBER);
+        this.selectedItemName=PreferenceManager.getString(context,SELECTED_CONSOLE_ITEM_STRING);
+        Commons.selectedConsoleName=this.selectedItemName.replace("_"," ");
         //this.selectedItemPosition=selectedItemPosition;
         Log.d(TAG,"selectedItemPosition at Constructing: "+selectedItemPosition);
         //this.lastItemSelectedPosition=selectedItemPosition;
@@ -126,7 +149,8 @@ public class ConsoleRecyclerViewAdapter extends RecyclerView.Adapter<ConsoleRecy
         UserConsoleInfo userConsoleInfo = list.get(position);
 
         holder.consoleNameTv.setText(userConsoleInfo.getName());
-        Glide.with(context).load(MainActivity.getImageId(userConsoleInfo.getImagePath())).into(holder.consoleImageIV);
+        Glide.with(context).load(((Commons)context.getApplicationContext()).getImageId(userConsoleInfo.getImagePath())).into(holder.consoleImageIV);
+        Log.d(TAG,"userConsoleInfo.getImagePath() : "+userConsoleInfo.getImagePath());
         //holder.consoleImageIV.setImageResource(MainActivity.getImageId(userConsoleInfo.getImagePath()));//R.drawable.playstation5);
 
         if(holder.getAdapterPosition()!=(getItemCount()-1))
@@ -171,10 +195,17 @@ public class ConsoleRecyclerViewAdapter extends RecyclerView.Adapter<ConsoleRecy
                     else
                     {
                         Log.d(TAG,"SELECTED ONCE");
-                        if(selectedItemPosition!=(getItemCount()-1)) PreferenceManager.setInt(context,SELECTED_CONSOLE_ITEM_NUMBER,getAdapterPosition());
-                        if(selectedItemPosition==getAdapterPosition() || selectedItemPosition==-1){
+                        if(selectedItemPosition!=(getItemCount()-1)) {
+                            PreferenceManager.setInt(context,SELECTED_CONSOLE_ITEM_NUMBER,getAdapterPosition());
+                            String selectedConsoleName=consoleNameTv.getText().toString();//.replace(" ","_");
+                            //String selectedTableName=selectedConsoleName.replace(" ","_");
+                            PreferenceManager.setString(context,SELECTED_CONSOLE_ITEM_STRING,selectedConsoleName);
+                            Commons.selectedConsoleName=selectedConsoleName;
+                            selectedConsoleChangedListener.onSelectedConsoleChanged(selectedConsoleName);
+                        }
+                        if(selectedItemPosition==getAdapterPosition()){// || selectedItemPosition==-1){
                             Log.d(TAG,"SELECTED AGAIN");
-                            if(selectedItemPosition==-1) selectedItemPosition=0;
+                            //if(selectedItemPosition==-1) selectedItemPosition=0;
                             mListener.onItemClick(view, selectedItemPosition);
                         }
                         selectedItemPosition=getAdapterPosition();

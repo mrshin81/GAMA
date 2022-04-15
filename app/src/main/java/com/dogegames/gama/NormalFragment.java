@@ -10,10 +10,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResult;
@@ -34,7 +39,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,8 +67,12 @@ public class NormalFragment extends Fragment {
     private String imagePathFromTitleDialog;
 
     private ItemTouchHelper mItemTouchHelper;
+    private ItemTouchHelper mGameItemTouchHelper;
+
 
     private View normalFragmentView;
+    Button showAllTitleBTN;
+    EditText searchET;
 
     ConsoleDBHelper consoleDBHelper;
     TitleDBHelper titleDBHelper;
@@ -71,6 +82,8 @@ public class NormalFragment extends Fragment {
     Handler mHandler=new Handler();
 
     ActivityResultLauncher<Intent> resultLauncherForTitleDialog;
+
+    ArrayList<UserTitleInfo> userTitleInfoArrayList;
 
     static public String imagePickerReturnValue;
 
@@ -113,14 +126,60 @@ public class NormalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         normalFragmentView=inflater.inflate(R.layout.fragment_normal, container, false);
-        //saveConsoleData();
-        Log.d(TAG,"onCreateView, NormalFragment");
-        //setConsoleRecyclerView();
+        showAllTitleBTN=normalFragmentView.findViewById(R.id.showAllTitleButton);
+        searchET=normalFragmentView.findViewById(R.id.searchEditText);
+
         setConsoleRecyclerViewFromDB(consoleDBHelper);//DB로부터 데이터 불러오기를 Background Thread로 동작시킨다.
-        setGameTitleRecyclerViewFromDB(titleDBHelper);
+
+        String selectedTableName=PreferenceManager.getString(getContext(), ConsoleRecyclerViewAdapter.SELECTED_CONSOLE_ITEM_STRING).replace(" ","_");
+
+        Log.d(TAG,"selectedTableName : "+selectedTableName);
+        setGameTitleRecyclerViewFromDB(titleDBHelper,selectedTableName);
+
         setImagePickerCallback();
+
+        showAllTitleBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                consoleRecyclerViewAdapter.unselectAllItems();
+                consoleRecyclerViewAdapter.notifyDataSetChanged();
+                setGameTitleRecyclerViewFromDB(titleDBHelper,"");
+            }
+        });
+
+        searchET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String searchText=searchET.getText().toString();
+                if(userTitleInfoArrayList!=null){
+                    searchFilter(userTitleInfoArrayList,searchText);
+                    Log.d(TAG,"searchFilter");
+                }
+            }
+        });
         // Inflate the layout for this fragment
         return normalFragmentView;
+    }
+
+    public void searchFilter(ArrayList<UserTitleInfo> list, String searchText){
+        ArrayList<UserTitleInfo> filteredList=new ArrayList<>();
+        filteredList.clear();
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).getName().toLowerCase().contains(searchText.toLowerCase())){
+                filteredList.add(list.get(i));
+            }
+        }
+        gameTitleRecyclerViewAdapter.filterList(filteredList);
     }
 
     private void setImagePickerCallback(){
@@ -173,6 +232,13 @@ public class NormalFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private String getSelectedConsoleName(int selectedConsole){
+        String[] consoleName=getResources().getStringArray(R.array.console_list);
+        String selectedConsoleName=consoleName[selectedConsole];
+        selectedConsoleName=selectedConsoleName.replace(" ","_");
+        return selectedConsoleName;
     }
     
     void saveConsoleData(){
@@ -278,30 +344,6 @@ public class NormalFragment extends Fragment {
         });
     }
 
-    private void showTitleDialog(ArrayList<UserTitleInfo> list, int pos){
-        TitleDialogFragment titleDialogFragment=TitleDialogFragment.newInstance("TitleDialogFragment",getContext(),list.get(pos));
-        titleDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
-        Log.d(TAG,"showTitleDialog");
-        //titleDialog=new TitleDialog(getContext(), list.get(pos));
-        //titleDialog.show();
-
-        //추가로 삭제 리스너, 아이템 리스너 동작을 코딩해야한다.
-        titleDialogFragment.setOnItemSaveListener(new TitleDialogFragment.OnItemSaveListener() {
-            @Override
-            public void onSaveItem(String gameTitleName, String imagePath) {
-                gameTitleName="gameTitleName";
-                gameTitleRecyclerViewAdapter.list.get(pos).setName(gameTitleName);
-                gameTitleRecyclerViewAdapter.list.get(pos).setImagePath(imagePath);
-                gameTitleRecyclerViewAdapter.notifyItemChanged(pos);
-            }
-        });
-
-        titleDialogFragment.setOnItemDeleteListener(new TitleDialogFragment.OnItemDeleteListener() {
-            @Override
-            public void onDeleteItem() {
-            }
-        });
-    }
 
 
     private void showAndSetConsoleDialog(ConsoleDBHelper consoleDBHelper, int pos){//ArrayList<UserConsoleInfo> setDBtoArrayList(ConsoleDBHelper consoleDBHelper){
@@ -394,59 +436,153 @@ public class NormalFragment extends Fragment {
                 }
             }
         });
+
+        consoleRecyclerViewAdapter.setOnSelectedConsoleChangedListener(new ConsoleRecyclerViewAdapter.OnSelectedConsoleChangedListener() {
+            @Override
+            public void onSelectedConsoleChanged(String selectedConsoleName) {
+                String tableName=selectedConsoleName.replace(" ","_");
+                Log.d(TAG,"onSelectedConsoleChanged, tableName : "+tableName);
+                setGameTitleRecyclerViewFromDB(titleDBHelper,tableName);
+            }
+        });
     }
 
-    void setGameTitleRecyclerViewFromDB(TitleDBHelper titleDBHelper){
-        ArrayList<UserTitleInfo> list=new ArrayList<>();
-
+    void setGameTitleRecyclerViewFromDB(TitleDBHelper titleDBHelper, String platformName){
+        //ArrayList<UserTitleInfo> list=new ArrayList<>();
+        userTitleInfoArrayList=new ArrayList<>();
         Runnable runnable=new Runnable() {
             @Override
             public void run() {
-                Cursor cursor=titleDBHelper.selectRecord();
-                UserTitleInfo[] userTitleInfo;
-                if(cursor!=null){
-                    userTitleInfo=new UserTitleInfo[cursor.getCount()];
-                    for(int i=0;i<userTitleInfo.length;i++){
-                        userTitleInfo[i]=new UserTitleInfo(getContext());
-                    }
 
-                    int i=0;
-                    Date date;
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                Cursor cursor;
+                if(platformName.equals("")){ //platform Name에 ""이 입력될 경우, 모든 콘솔의 게임 타이틀을 DB로부터 불러온다.
+                    cursor=titleDBHelper.getTableList();
+                    String[] tableName;
+                    String[] tableNameAll;
 
-                    while(cursor.moveToNext()){
-                        userTitleInfo[i].setName(cursor.getString(1));
-                        userTitleInfo[i].setMaker(cursor.getString(2));
-                        userTitleInfo[i].setPlatform(cursor.getString(3));
-                        try{
-                            date=sdf.parse(cursor.getString(4));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            date=new Date();
+                    if(cursor!=null) {
+                        tableNameAll = new String[cursor.getCount()];
+                        int i = 0;
+                        int nullCount = 0;
+                        while (cursor.moveToNext()) {
+                            String tableNameTemp = cursor.getString(1);
+                            /*if (tableNameTemp.equals("android_metadata")) {
+                                Log.d(TAG, "android_metadata");
+                            }*/
+                            if (!tableNameTemp.equals("android_metadata") && !tableNameTemp.equals("sqlite_sequence")) {
+                                tableNameAll[i] = tableNameTemp;
+                                i++;
+                            } else {
+                                nullCount++;
+                            }
                         }
-                        userTitleInfo[i].setLaunchDate(date);
-                        userTitleInfo[i].setImagePath(cursor.getString(5));
-                        userTitleInfo[i].setGenre(cursor.getString(6));
-                        userTitleInfo[i].setMemo(cursor.getString(7));
-                        userTitleInfo[i].setPrice(cursor.getInt(8));
-                        userTitleInfo[i].setRating(cursor.getInt(9));
-                        userTitleInfo[i].setId(cursor.getString(11));
+                        tableName = Arrays.copyOf(tableNameAll, tableNameAll.length - nullCount);
 
-                        Log.d(TAG,"userTitleInfo["+i+"] : "+userTitleInfo[i].getId());
+                        for (int j = 0; j < tableName.length; j++) {
+                            Log.d(TAG, "tableName[" + j + "] : " + tableName[j]);
+                        }
+                        if(tableName.length==0){ //최초 실행시 tableName 배열의 길이가 0이라서 lentgh=0, index=0으로 프로그램 뻗는 것 방지하기 위함
+                            String[] temp=new String[1];
+                            temp[0]="";
+                            cursor = titleDBHelper.selectRecordMultipleTables(temp);
+                        }else{
+                            cursor = titleDBHelper.selectRecordMultipleTables(tableName);
+                        }
+                        //Log.d(TAG,"tableName : "+tableName[0].toString());
+                        //setGameTitleRecyclerViewFromDB(titleDBHelper,tableName[j]);
 
-                        list.add(userTitleInfo[i]);
-                        i++;
+                        //getGameTitleRecyclerViewFromMultipleTables(titleDBHelper,tableName[0],tableName[1]);
+                        UserTitleInfo[] userTitleInfo;
+                        if (cursor != null) {
+                            userTitleInfo = new UserTitleInfo[cursor.getCount()];
+                            Log.d(TAG, "cursor getCount() : " + cursor.getCount());
+                            for (int j = 0; j < userTitleInfo.length; j++) {
+                                userTitleInfo[j] = new UserTitleInfo(getContext());
+                            }
+
+                            int k = 0;
+                            Date date;
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                            while (cursor.moveToNext()) {
+                                userTitleInfo[k].setName(cursor.getString(1));
+                                userTitleInfo[k].setPlatform(cursor.getString(2));
+                                userTitleInfo[k].setMaker(cursor.getString(3));
+                                try {
+                                    date = sdf.parse(cursor.getString(4));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                    date = new Date();
+                                }
+                                userTitleInfo[k].setLaunchDate(date);
+                                userTitleInfo[k].setImagePath(cursor.getString(5));
+                                userTitleInfo[k].setGenre(cursor.getString(6));
+                                userTitleInfo[k].setMemo(cursor.getString(7));
+                                userTitleInfo[k].setPrice(cursor.getInt(8));
+                                userTitleInfo[k].setRating(cursor.getInt(9));
+                                userTitleInfo[k].setId(cursor.getString(11));
+
+                                //Log.d(TAG, "userTitleInfo[" + i + "] : " + userTitleInfo[i].getId());
+
+                                userTitleInfoArrayList.add(userTitleInfo[k]);
+                                k++;
+                            }
+
+                        }
                     }
+                }else{ //platform name에 특정 콘솔이 선택되어질 경우
+                    Log.d(TAG,"setGameTitleRecyclerViewFromDB, platformName not empty");
+                    cursor=titleDBHelper.selectRecord(platformName);
+
+                    UserTitleInfo[] userTitleInfo;
+                    if(cursor!=null){
+                        userTitleInfo=new UserTitleInfo[cursor.getCount()];
+                        Log.d(TAG,"cursor getCount() : "+cursor.getCount());
+                        for(int i=0;i<userTitleInfo.length;i++){
+                            userTitleInfo[i]=new UserTitleInfo(getContext());
+                        }
+
+                        int i=0;
+                        Date date;
+                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+
+                        while(cursor.moveToNext()){
+                            userTitleInfo[i].setName(cursor.getString(1));
+                            userTitleInfo[i].setPlatform(cursor.getString(2));
+                            userTitleInfo[i].setMaker(cursor.getString(3));
+                            try{
+                                date=sdf.parse(cursor.getString(4));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                                date=new Date();
+                            }
+                            userTitleInfo[i].setLaunchDate(date);
+                            userTitleInfo[i].setImagePath(cursor.getString(5));
+                            userTitleInfo[i].setGenre(cursor.getString(6));
+                            userTitleInfo[i].setMemo(cursor.getString(7));
+                            userTitleInfo[i].setPrice(cursor.getInt(8));
+                            userTitleInfo[i].setRating(cursor.getInt(9));
+                            userTitleInfo[i].setId(cursor.getString(11));
+
+                            Log.d(TAG,"userTitleInfo["+i+"] : "+userTitleInfo[i].getId());
+
+                            userTitleInfoArrayList.add(userTitleInfo[i]);
+                            i++;
+                        }
+                    }
+
+
                 }
+                //cursor=titleDBHelper.selectRecord(platformName);
 
                 //무조건 ADD Title 아이템은 RV에 추가되어야 한다.
                 UserTitleInfo userTitleAddItem=new UserTitleInfo(getContext(), "ADD Title...");
-                list.add(userTitleAddItem);
+                userTitleInfoArrayList.add(userTitleAddItem);
 
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setTitleRecyclerView(list);
+                        setTitleRecyclerView(userTitleInfoArrayList);
                     }
                 });
             }
@@ -457,59 +593,36 @@ public class NormalFragment extends Fragment {
 
     }
 
-    private void setTitleRecyclerView(ArrayList<UserTitleInfo> list){
-        gameTitleRecyclerViewAdapter=new GameTitleRecyclerViewAdapter(getContext(), list);
-        RecyclerView recyclerView=normalFragmentView.findViewById(R.id.gameTitleRecyclerView);
-
-        recyclerView.addItemDecoration(new MyGameTitleItemDecoration());
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),3);
-
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(gameTitleRecyclerViewAdapter);
-
-        gameTitleRecyclerViewAdapter.setOnItemClickListener(new GameTitleRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-                //Log.d(TAG,"onItemClick in setTitleRecyclerView, pos : "+pos);
-                if(pos==(recyclerView.getAdapter().getItemCount()-1)) {//클릭한 아이템이 마지막 아이템, 즉, 추가 아이템이면 콘솔 추가 프래그먼트 띄우기
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.setFrament(MainActivity.AddTitleFRAGMENT);
-                    Log.d(TAG,"onItemClick when clicked last item in setTitleRecyclerView, pos : "+pos);
-                }else{
-                    showAndSetTitleDialog(titleDBHelper, pos);
-                    Log.d(TAG,"onItemClick when clicked normal items in setTitleRecyclerView, pos : "+pos);
-                }
-            }
-        });
-    }
-
-    private void showAndSetTitleDialog(TitleDBHelper titleDBHelper, int pos){
-        ArrayList<UserTitleInfo> list=new ArrayList<>();
-
+    ArrayList<UserTitleInfo> getGameTitleRecyclerViewFromMultipleTables(TitleDBHelper titleDBHelper, String platformName, String platformNameNEXT){
+        //ArrayList<UserTitleInfo> list=new ArrayList<>();
+        userTitleInfoArrayList=new ArrayList<>();
         Runnable runnable=new Runnable() {
             @Override
             public void run() {
-                Cursor cursor=titleDBHelper.selectRecord();
+                Cursor cursor;
+                cursor=titleDBHelper.selectRecord(platformName);
+
                 UserTitleInfo[] userTitleInfo;
-                if(cursor!=null){
-                    userTitleInfo=new UserTitleInfo[cursor.getCount()];
-                    for(int i=0;i<userTitleInfo.length;i++){
-                        userTitleInfo[i]=new UserTitleInfo(getContext());
+                if(cursor!=null) {
+                    userTitleInfo = new UserTitleInfo[cursor.getCount()];
+                    Log.d(TAG, "cursor getCount() : " + cursor.getCount());
+                    for (int i = 0; i < userTitleInfo.length; i++) {
+                        userTitleInfo[i] = new UserTitleInfo(getContext());
                     }
 
-                    int i=0;
+                    int i = 0;
                     Date date;
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-                    while(cursor.moveToNext()){
+                    while (cursor.moveToNext()) {
                         userTitleInfo[i].setName(cursor.getString(1));
-                        userTitleInfo[i].setMaker(cursor.getString(2));
-                        userTitleInfo[i].setPlatform(cursor.getString(3));
-                        try{
-                            date=sdf.parse(cursor.getString(4));
+                        userTitleInfo[i].setPlatform(cursor.getString(2));
+                        userTitleInfo[i].setMaker(cursor.getString(3));
+                        try {
+                            date = sdf.parse(cursor.getString(4));
                         } catch (ParseException e) {
                             e.printStackTrace();
-                            date=new Date();
+                            date = new Date();
                         }
                         userTitleInfo[i].setLaunchDate(date);
                         userTitleInfo[i].setImagePath(cursor.getString(5));
@@ -519,19 +632,140 @@ public class NormalFragment extends Fragment {
                         userTitleInfo[i].setRating(cursor.getInt(9));
                         userTitleInfo[i].setId(cursor.getString(11));
 
-                        Log.d(TAG,"userTitleInfo["+i+"] : "+userTitleInfo[i].getId());
+                        Log.d(TAG, "userTitleInfo[" + i + "] : " + userTitleInfo[i].getId());
 
-                        list.add(userTitleInfo[i]);
+                        userTitleInfoArrayList.add(userTitleInfo[i]);
                         i++;
                     }
+                }
 
-                    UserTitleInfo userTitleAddItem=new UserTitleInfo(getContext(), "ADD Title...");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!platformNameNEXT.equals("")){
+                            getGameTitleRecyclerViewFromMultipleTables(titleDBHelper, platformName, platformNameNEXT);
+                        }
+                    }
+                });
+            }
+        };
+
+        Thread thread=new Thread(runnable);
+        thread.start();
+
+        return userTitleInfoArrayList;
+
+    }
+
+    private void setTitleRecyclerView(ArrayList<UserTitleInfo> list){
+        RecyclerView recyclerView=normalFragmentView.findViewById(R.id.gameTitleRecyclerView);
+        if(gameTitleRecyclerViewAdapter==null){ //최초 프래그먼트 생성시 Recycler View 세팅
+            gameTitleRecyclerViewAdapter=new GameTitleRecyclerViewAdapter(getContext(), list);
+
+            recyclerView.addItemDecoration(new MyGameTitleItemDecoration());
+            GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),3);
+
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(gameTitleRecyclerViewAdapter);
+
+            mGameItemTouchHelper=new ItemTouchHelper(new GameItemTouchHelperCallback(gameTitleRecyclerViewAdapter));
+            mGameItemTouchHelper.attachToRecyclerView(recyclerView);
+        }else{ //선택된 콘솔 아이템이 바뀔경우, 게임타이틀 아이템만 변경
+            gameTitleRecyclerViewAdapter=new GameTitleRecyclerViewAdapter(getContext(), list);
+            recyclerView.setAdapter(gameTitleRecyclerViewAdapter);
+        }
+
+        gameTitleRecyclerViewAdapter.setOnItemClickListener(new GameTitleRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos, String tableName, String id) {
+                //Log.d(TAG,"onItemClick in setTitleRecyclerView, pos : "+pos);
+                /*if(pos==(recyclerView.getAdapter().getItemCount()-1)) {//클릭한 아이템이 마지막 아이템, 즉, 추가 아이템이면 콘솔 추가 프래그먼트 띄우기
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.setFrament(MainActivity.AddTitleFRAGMENT);
+                    Log.d(TAG,"onItemClick when clicked last item in setTitleRecyclerView, pos : "+pos);
+                }
+                else
+                {
+                    //클릭한 아이템의 기종을 얻어와야지
+                    showAndSetTitleDialog(titleDBHelper, pos, tableName, id);
+                    Log.d(TAG,"onItemClick when clicked normal items in setTitleRecyclerView, pos : "+pos);
+                }*/
+                if(tableName==null){
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.setFrament(MainActivity.AddTitleFRAGMENT);
+                }else{
+                    showAndSetTitleDialog(titleDBHelper, pos, tableName, id);
+                }
+            }
+        });
+    }
+
+    private void showTitleDialog(UserTitleInfo userTitleInfo, int pos){
+        TitleDialogFragment titleDialogFragment=TitleDialogFragment.newInstance("TitleDialogFragment",getContext(),userTitleInfo);
+        titleDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
+        Log.d(TAG,"showTitleDialog");
+        //titleDialog=new TitleDialog(getContext(), list.get(pos));
+        //titleDialog.show();
+
+        //추가로 삭제 리스너, 아이템 리스너 동작을 코딩해야한다.
+        titleDialogFragment.setOnItemSaveListener(new TitleDialogFragment.OnItemSaveListener() {
+            @Override
+            public void onSaveItem(String gameTitleName, String imagePath) {
+                gameTitleRecyclerViewAdapter.list.get(pos).setName(gameTitleName);
+                gameTitleRecyclerViewAdapter.list.get(pos).setImagePath(imagePath);
+                gameTitleRecyclerViewAdapter.notifyItemChanged(pos);
+            }
+        });
+
+        titleDialogFragment.setOnItemDeleteListener(new TitleDialogFragment.OnItemDeleteListener() {
+            @Override
+            public void onDeleteItem() {
+                gameTitleRecyclerViewAdapter.deleteItem(pos);
+                gameTitleRecyclerViewAdapter.notifyItemRemoved(pos);
+            }
+        });
+    }
+
+
+    private void showAndSetTitleDialog(TitleDBHelper titleDBHelper, int pos, String tableName, String id){
+        //ArrayList<UserTitleInfo> list=new ArrayList<>();
+        UserTitleInfo userTitleInfo=new UserTitleInfo(getContext());
+        Runnable runnable=new Runnable() {
+            @Override
+            public void run() {
+                Cursor cursor=titleDBHelper.selectOneRecord(tableName,id);
+                Log.d(TAG,"tableName : "+tableName+", id : "+id);
+                //Cursor cursor=titleDBHelper.selectRecord("TEST추후수정필요하다");
+                if(cursor!=null){
+                    Date date;
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+                    cursor.moveToFirst();
+                    userTitleInfo.setName(cursor.getString(1));
+                    userTitleInfo.setMaker(cursor.getString(3));
+                    userTitleInfo.setPlatform(cursor.getString(2));
+                    try{
+                        date=sdf.parse(cursor.getString(4));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        date=new Date();
+                    }
+                    userTitleInfo.setLaunchDate(date);
+                    userTitleInfo.setImagePath(cursor.getString(5));
+                    userTitleInfo.setGenre(cursor.getString(6));
+                    userTitleInfo.setMemo(cursor.getString(7));
+                    userTitleInfo.setPrice(cursor.getInt(8));
+                    userTitleInfo.setRating(cursor.getInt(9));
+                    userTitleInfo.setId(cursor.getString(11));
+
+                        //list.add(userTitleInfo);
+
+                    /*UserTitleInfo userTitleAddItem=new UserTitleInfo(getContext(), "ADD Title...");
                     list.add(userTitleAddItem);
-
+                    */
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            showTitleDialog(list, pos);
+                            showTitleDialog(userTitleInfo, pos);
                         }
                     });
                 }

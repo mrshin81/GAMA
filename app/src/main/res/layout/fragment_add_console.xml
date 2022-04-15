@@ -29,15 +29,16 @@
             android:textSize="18sp" />
     </FrameLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/saveButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="add console complete"
-        android:scaleType="fitXY"
-        android:src="@drawable/add_complete_button"
+        android:layout_margin="8dp"
+        android:background="@drawable/selector_button_rounded_red"
+        android:fontFamily="sans-serif-black"
         android:text="@string/console_add_save_button_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +48,7 @@
         android:id="@+id/cancelButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:background="@android:color/transparent"
         android:contentDescription="close"
         android:scaleType="centerInside"
@@ -55,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/v_guideline_80"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/close_button_blue_square" />
+        app:srcCompat="@drawable/close_button_red" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h_guideline_10"
@@ -464,7 +466,7 @@
         android:id="@+id/showDatePickerButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:background="@android:color/transparent"
         android:padding="8dp"
         android:scaleType="centerInside"

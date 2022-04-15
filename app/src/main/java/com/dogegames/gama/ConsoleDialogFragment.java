@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,11 +49,11 @@ public class ConsoleDialogFragment extends DialogFragment {
 
     static private Context context;
     static private UserConsoleInfo userConsoleInfo;
-    ImageButton modifyBTN;
-    ImageButton cancelBTN;
+    Button modifyBTN;
+    Button cancelBTN;
     ImageButton closeBTN;
-    ImageButton saveBTN;
-    ImageButton deleteBTN;
+    Button saveBTN;
+    Button deleteBTN;
     ImageButton datePickerBTN;
     EditText consoleBuyPriceET;
     EditText consoleBuyDateET;
@@ -194,12 +195,12 @@ public class ConsoleDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         //setDialogSize();
-        ((Commons)getActivity().getApplication()).setDialogSize(getActivity(), getDialog(), 0.9f, 0.8f);
+        ((Commons)getActivity().getApplication()).setDialogSize(getActivity(), getDialog(), 0.9f, 0.78f);
     }
 
     void setModifyMode(boolean isModifyMode){
         if(!isModifyMode){
-            consoleNameDropdown.setEnabled(false);
+            //consoleNameDropdown.setEnabled(false);
             consoleBuyDateET.setEnabled(false);
             consoleBuyPriceET.setEnabled(false);
             consoleMemoET.setEnabled(false);
@@ -212,7 +213,7 @@ public class ConsoleDialogFragment extends DialogFragment {
             modifyBTN.setVisibility(View.VISIBLE);
             deleteBTN.setVisibility(View.VISIBLE);
         }else{
-            consoleNameDropdown.setEnabled(true);
+            //consoleNameDropdown.setEnabled(true);
             consoleBuyDateET.setEnabled(true);
             consoleBuyPriceET.setEnabled(true);
             consoleMemoET.setEnabled(true);
@@ -237,7 +238,7 @@ public class ConsoleDialogFragment extends DialogFragment {
         consoleDescMakerTV.setText(consoleMaker[selectedConsole]);
         consoleDescDateTV.setText(consoleDate[selectedConsole]);
         consoleDescSpecTV.setText(consoleSpec[selectedConsole]);
-        consoleDescIV.setImageResource(MainActivity.getImageId(getContext(),consoleImagePath[selectedConsole]));
+        consoleDescIV.setImageResource(((Commons)getActivity().getApplication()).getImageId(consoleImagePath[selectedConsole]));
     }
 
     /*Date convertStringToDate(String strDate){

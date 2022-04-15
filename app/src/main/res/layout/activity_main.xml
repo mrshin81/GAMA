@@ -7,10 +7,24 @@
     android:background="#EFEFEF"
     tools:context=".MainActivity">
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#EFEFEF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/hor_guideline_90"
+        app:menu="@menu/nav" />
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/hor_guideline_7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +35,10 @@
         android:name="com.dogegames.gama.NormalFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/hor_guideline_90"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/hor_guideline_21"
+        app:layout_constraintTop_toTopOf="@id/hor_guideline_14"
         tools:layout="@layout/fragment_normal" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -55,6 +69,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.4" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hor_guideline_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -75,10 +96,10 @@
         android:background="@drawable/user_status_bar_bg"
         android:orientation="horizontal"
         android:weightSum="10"
-        app:layout_constraintBottom_toBottomOf="@id/hor_guideline_21"
+        app:layout_constraintBottom_toBottomOf="@id/hor_guideline_14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/adView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="0dp"

@@ -131,6 +131,8 @@ public class AddTitleFragment extends Fragment {
         //setPlatformDropdown();
         String[] consoleItems=getResources().getStringArray(R.array.console_list);
         ((Commons)getActivity().getApplication()).setDropdown(consoleItems,platformDropdown);
+        platformDropdown.setSelection(((Commons)getActivity().getApplication()).getConsoleNumber(Commons.selectedConsoleName));
+        Log.d(TAG, "Commons.selectedConsoleName : "+Commons.selectedConsoleName);
 
         String[] genreItems=getResources().getStringArray(R.array.genre);
         ((Commons)getActivity().getApplication()).setDropdown(genreItems,genreDropdown);
@@ -256,6 +258,7 @@ public class AddTitleFragment extends Fragment {
         }
 
         String platform = platformDropdown.getSelectedItem().toString();
+        String platformConverted=platform.replace(" ","_");
         Log.d(TAG, "platform : " + platform);
         if(platform.equals("")){
             platform="null";
@@ -301,8 +304,8 @@ public class AddTitleFragment extends Fragment {
         //saveBitmapToPNG(imgFileName);//사진첩에서 고른 사진을 내부저장소에 저장
         ((Commons)getActivity().getApplication()).saveImageViewToPNG(titleIV,imgFileName);
         String imagePath = imgFileName;//getActivity().getCacheDir() + "/" + imgFileName;//사진 찍던지 사진첩에서 선택해서 저장된 리소스를 활용해야한다.
-
-        titleDBHelper.insertRecord(TitleDBHelper.TABLE_NAME, titleNameET.getText().toString(), platform, makerName, buyDate, imagePath, genre, memoET.getText().toString(), Integer.valueOf(price),Integer.valueOf(rating), titleDBHelper.getNo(), id);
+        titleDBHelper.createTable(platformConverted);
+        titleDBHelper.insertRecord(platformConverted, titleNameET.getText().toString(), platform, makerName, buyDate, imagePath, genre, memoET.getText().toString(), Integer.valueOf(price),Integer.valueOf(rating), titleDBHelper.getNo(platformConverted), id);
     }
 
 }

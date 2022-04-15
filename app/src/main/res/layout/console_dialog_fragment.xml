@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f9f9f9"
@@ -36,7 +36,7 @@
         android:id="@+id/closeButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="4dp"
+        android:layout_margin="10dp"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
         android:text="닫기"
@@ -44,56 +44,80 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/v_guideline_80"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/close_button_blue_square" />
+        app:srcCompat="@drawable/close_button_red" />
 
-    <ImageButton
+    <Button
         android:id="@+id/modifyButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/selector_button_rounded_blue"
+        android:fontFamily="sans-serif-black"
         android:scaleType="fitXY"
-        android:src="@drawable/modify_button_blue"
-        android:text="수정"
+        android:text="@string/console_modify_button_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/v_guideline_50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
 
-    <ImageButton
+    <Button
         android:id="@+id/deleteButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/selector_button_rounded_red"
+        android:fontFamily="sans-serif-black"
         android:scaleType="fitXY"
-        android:text="삭제"
+        android:text="@string/console_del_button_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/v_guideline_50"
-        app:layout_constraintTop_toTopOf="@id/h_guideline_90"
-        app:srcCompat="@drawable/delete_button" />
+        app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
 
-    <ImageButton
+    <Button
         android:id="@+id/saveButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/selector_button_rounded_red"
+        android:fontFamily="sans-serif-black"
         android:scaleType="fitXY"
-        android:src="@drawable/save_button_red_short"
         android:text="@string/console_add_save_button_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/v_guideline_50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/h_guideline_90" />
 
-    <ImageButton
+    <Button
         android:id="@+id/cancelButtonInConsoleDialogFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/selector_button_rounded_blue"
+        android:fontFamily="sans-serif-black"
         android:scaleType="fitXY"
-        android:src="@drawable/cancel_button_blue_short"
         android:text="@string/console_add_cancel_button_text"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

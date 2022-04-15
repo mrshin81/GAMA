@@ -7,12 +7,96 @@
     android:background="@android:color/transparent"
     tools:context=".NormalFragment">
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        app:layout_constraintBottom_toTopOf="@id/h_guideline_nor_frag_26"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hor_guideline_18">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:background="@drawable/search_bar_rectangle"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="7.5"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="찾고싶은 타이틀 명을 입력하세요."
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/searchButtonInNormalFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/search_icon"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/showAllTitleButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="1.75"
+            android:alpha="0.8"
+            android:background="@drawable/selector_button_rounded_red"
+            android:scaleType="centerInside"
+            android:src="@drawable/button_change"
+            android:text="@string/normalfragment_showalltitle_text"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/v_guideline_nor_frag_82"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.82" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_nor_frag_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/hor_guideline_18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.18" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h_guideline_nor_frag_26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.26" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/consoleRecyclerView"
@@ -29,12 +113,12 @@
         android:id="@+id/gameTitleRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
+        android:background="#FFFFFF"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/hor_guideline_18" />
+        app:layout_constraintTop_toTopOf="@id/h_guideline_nor_frag_26" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,10 +15,10 @@
         <item>XBOX 360</item>
         <item>XBOX</item>
 
-        <item>Switch Lite</item>
-        <item>Switch</item>
-        <item>3DS</item>
-        <item>2DS</item>
+        <item>Nintendo Switch Lite</item>
+        <item>Nintendo Switch</item>
+        <item>Nintendo 3DS</item>
+        <item>Nintendo 2DS</item>
         <item>Wii U</item>
         <item>Wii</item>
 
@@ -39,10 +39,10 @@
         <item>xbox360</item>
         <item>xbox</item>
 
-        <item>nintendo_switchlite</item>
-        <item>nintendo_switch</item>
-        <item>nintendo_3ds</item>
-        <item>nintendo_2ds</item>
+        <item>nintendoswitchlite</item>
+        <item>nintendoswitch</item>
+        <item>nintendo3ds</item>
+        <item>nintendo2ds</item>
         <item>wiiu</item>
         <item>wii</item>
 

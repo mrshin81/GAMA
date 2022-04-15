@@ -2,11 +2,13 @@ package com.dogegames.gama;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,6 +43,7 @@ public class AddConsoleFragment extends Fragment {
     DatePickerDialog datePickerDialog=null;
 
     ConsoleDBHelper consoleDBHelper;
+    TitleDBHelper titleDBHelper;
 
     //UI 객체 연결 변수
     Spinner consoleNameDropdown;
@@ -48,7 +51,7 @@ public class AddConsoleFragment extends Fragment {
     EditText buyPriceET;
     EditText memoET;
     ImageButton showDatePickerBTN;
-    ImageButton saveBTN;
+    Button saveBTN;
     ImageButton cancelBTN;
 
     TextView consoleMakerTV;
@@ -109,7 +112,7 @@ public class AddConsoleFragment extends Fragment {
         consoleIV=view.findViewById(R.id.consoleDescImageView);
 
         consoleDBHelper=ConsoleDBHelper.getInstance(getContext());//MainActivity.context);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        titleDBHelper=TitleDBHelper.getInstance(getContext());
 
         showDatePickerBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,37 +125,11 @@ public class AddConsoleFragment extends Fragment {
         saveBTN.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                long timeStamp=System.currentTimeMillis();
-                String consoleFirstLetter;
-                consoleFirstLetter=consoleNameDropdown.getSelectedItem().toString().substring(0,1);
-                if(consoleFirstLetter.equals("")){
-                    consoleFirstLetter="x";
-                }
-                String id=consoleFirstLetter+timeStamp;
-                String price=buyPriceET.getText().toString();
-                if(price.equals("")){
-                    price="0";
-                }
-
-                String memo=memoET.getText().toString();
-                if(memo.equals("")){
-                    memo="NONE";
-                }
-                Date date;
-                try {
-                    date=sdf.parse(buyDateET.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date=new Date();
-                }
-
-                String[] consoleImagePathList=getContext().getResources().getStringArray(R.array.console_list);
-
-                String imagePath=consoleImagePathList[consoleNameDropdown.getSelectedItemPosition()];
-                imagePath=imagePath.toLowerCase(Locale.ROOT).replaceAll(" ","");
-                consoleDBHelper.insertRecord(ConsoleDBHelper.TABLE_NAME, consoleNameDropdown.getSelectedItem().toString(), imagePath, Integer.valueOf(price), date,memo, consoleDBHelper.getNo(), id);
-
+                addConsole();
                 ((MainActivity)getActivity()).setFrament(MainActivity.NormalFRAGMENT);
+                //ConsoleRecyclerViewAdapter.selectedItemPosition=0;
+                PreferenceManager.setInt(getContext(),ConsoleRecyclerViewAdapter.SELECTED_CONSOLE_ITEM_NUMBER,0);
+                PreferenceManager.setString(getContext(),ConsoleRecyclerViewAdapter.SELECTED_CONSOLE_ITEM_STRING,consoleNameDropdown.getSelectedItem().toString());
             }
         });
 
@@ -182,7 +159,49 @@ public class AddConsoleFragment extends Fragment {
         return view;
     }
 
-    void setConsoleSpec(int selectedConsole){
+    private void addConsole(){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+
+        long timeStamp=System.currentTimeMillis();
+        String consoleFirstLetter;
+        consoleFirstLetter=consoleNameDropdown.getSelectedItem().toString().substring(0,1);
+        if(consoleFirstLetter.equals("")){
+            consoleFirstLetter="x";
+        }
+        String id=consoleFirstLetter+timeStamp;
+        String price=buyPriceET.getText().toString();
+        if(price.equals("")){
+            price="0";
+        }
+
+        String memo=memoET.getText().toString();
+        if(memo.equals("")){
+            memo="NONE";
+        }
+        Date date;
+        try {
+            date=sdf.parse(buyDateET.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            date=new Date();
+        }
+
+        String[] consoleImagePathList=getContext().getResources().getStringArray(R.array.console_list);
+
+        String imagePath=consoleImagePathList[consoleNameDropdown.getSelectedItemPosition()];
+        imagePath=imagePath.toLowerCase(Locale.ROOT).replaceAll(" ","");
+        consoleDBHelper.insertRecord(ConsoleDBHelper.TABLE_NAME, consoleNameDropdown.getSelectedItem().toString(), imagePath, Integer.valueOf(price), date,memo, consoleDBHelper.getNo(), id);
+        //선택된 콘솔을 추가하면 타이틀 DB에 테이블을 추가한다.
+        String selectedPlatform=consoleNameDropdown.getSelectedItem().toString();
+        selectedPlatform=selectedPlatform.replace(" ","_");
+        Log.d(TAG,"getSelectedItem : "+selectedPlatform);
+
+        titleDBHelper.createTable(selectedPlatform);
+    }
+
+
+
+    private void setConsoleSpec(int selectedConsole){
         String[] consoleMaker=getResources().getStringArray(R.array.console_maker);
         String[] consoleDate=getResources().getStringArray(R.array.console_date);
         String[] consoleSpec=getResources().getStringArray(R.array.console_spec);
@@ -191,6 +210,6 @@ public class AddConsoleFragment extends Fragment {
         consoleMakerTV.setText(consoleMaker[selectedConsole]);
         consoleDateTV.setText(consoleDate[selectedConsole]);
         consoleSpecTV.setText(consoleSpec[selectedConsole]);
-        consoleIV.setImageResource(MainActivity.getImageId(getContext(),consoleImagePath[selectedConsole]));
+        consoleIV.setImageResource(((Commons)getActivity().getApplication()).getImageId(consoleImagePath[selectedConsole]));
     }
 }

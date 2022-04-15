@@ -151,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/nintendo_2ds" />
+                app:srcCompat="@drawable/nintendo2ds" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -295,6 +295,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ems="10"
+        android:gravity="top"
         android:hint="@string/title_memo_edit_text"
         android:inputType="text"
         android:textSize="14sp"

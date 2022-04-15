@@ -35,6 +35,8 @@ import java.util.Date;
 
 public class Commons extends Application {
 
+    static public String selectedConsoleName;
+
     public void saveImageViewToPNG(ImageView imageView, String fileName){
         BitmapDrawable drawable=(BitmapDrawable) imageView.getDrawable();
         Bitmap bitmap=drawable.getBitmap();
@@ -122,5 +124,22 @@ public class Commons extends Application {
     public String convertDateToString(Date date){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
+    }
+
+    public int getImageId(String imageName){
+        int id=getResources().getIdentifier("drawable/"+imageName,null,getPackageName());
+        return id;
+    }
+
+    public int getConsoleNumber(String consoleName){
+        int consoleNumber=0;
+        String[] consoleList=getResources().getStringArray(R.array.console_list);
+
+        for(int i=0;i<consoleList.length;i++){
+            if(consoleName.equals(consoleList[i])){
+                consoleNumber=i;
+            }
+        }
+        return consoleNumber;
     }
 }

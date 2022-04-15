@@ -136,4 +136,16 @@ public class UserTitleInfo {
     public void setId(String id){
         this.id=id;
     }
+
+    public int getConsoleNumber(){
+        int consoleNumber=0;
+        String[] consoleList=context.getResources().getStringArray(R.array.console_list);
+
+        for(int i=0;i<consoleList.length;i++){
+            if(platform.equals(consoleList[i])){
+                consoleNumber=i;
+            }
+        }
+        return consoleNumber;
+    }
 }
