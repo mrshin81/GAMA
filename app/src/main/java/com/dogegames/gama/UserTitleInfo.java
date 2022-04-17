@@ -148,4 +148,16 @@ public class UserTitleInfo {
         }
         return consoleNumber;
     }
+
+    public int getGenreNumber(){
+        int genreNumber=0;
+        String[] genreList=context.getResources().getStringArray(R.array.genre);
+
+        for(int i=0;i<genreList.length;i++){
+            if(genre.equals(genreList[i])){
+                genreNumber=i;
+            }
+        }
+        return genreNumber;
+    }
 }

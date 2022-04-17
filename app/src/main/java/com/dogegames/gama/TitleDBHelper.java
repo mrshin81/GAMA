@@ -126,6 +126,7 @@ public class TitleDBHelper extends SQLiteOpenHelper {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         String strDate=sdf.format(launchDate);
         String modifyRecord_query="UPDATE "+tableName+" SET name = "+"'"+name+"'"+", platform ="+"'"+platform+"'"+", maker = "+"'"+maker+"'"+", launchdate = "+"'"+strDate+"'"+", imagepath = "+"'"+imagePath+"'"+", genre = "+"'"+genre+"'"+", memo = "+"'"+memo+"'"+", price = "+"'"+price+"'"+", rating = "+"'"+rating+"'"+" WHERE id = "+"'"+id+"'";
+        //Log.d(TAG,"GENRE : "+genre+", query : "+modifyRecord_query);
         db.execSQL(modifyRecord_query);
     }
 

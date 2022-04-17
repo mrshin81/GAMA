@@ -56,8 +56,13 @@
     <!-- GameTitle Dialog용 strings -->
     <string name="titledialog_title_text">게임타이틀&#160;세부사항</string>
 
-    <!-- GameTitle Dialog용 strings -->
+    <!-- Normal Fragment용 strings -->
     <string name="normalfragment_showalltitle_text">전체&#160;보기</string>
+
+    <!-- Statistic Fragment용 strings -->
+    <string name="statisticfragment_chart1_text">기종별&#160;타이틀수</string>
+    <string name="statisticfragment_chart2_text">장르별&#160;타이틀수</string>
+    <string name="statisticfragment_chart3_text">소&#160;비&#160;금&#160;액</string>
 
 
 </resources>

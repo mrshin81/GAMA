@@ -147,10 +147,12 @@ public class TitleDialogFragment extends DialogFragment {
         String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);
         ((Commons)getActivity().getApplication()).setDropdown(consoleItems, consoleNameDropdown);
         consoleNameDropdown.setSelection(userTitleInfo.getConsoleNumber());
-        Log.d(TAG,"userTitleInfo.getConsoleNumber() : "+userTitleInfo.getConsoleNumber());
+        //Log.d(TAG,"userTitleInfo.getConsoleNumber() : "+userTitleInfo.getConsoleNumber());
 
         String[] genreItems=getContext().getResources().getStringArray(R.array.genre);
         ((Commons)getActivity().getApplication()).setDropdown(genreItems,genreDropdown);
+        genreDropdown.setSelection(userTitleInfo.getGenreNumber());
+        Log.d(TAG,"getGenreNumber() : "+userTitleInfo.getGenreNumber());
 
         gameTitleNameET.setText(userTitleInfo.getName());
         //Glide.with(context).load(getImageFullPath(userTitleInfo.getImagePath())).into(gameTitleIV);
@@ -247,9 +249,10 @@ public class TitleDialogFragment extends DialogFragment {
                     //((Commons)getActivity().getApplication()).saveImageViewToPNG(gameTitleIV,imgFileName);
 
                     if(userTitleInfo.getPlatform().equals(platform)){//타이틀 수정시에 플랫폼이 수정 되지 않을경우(즉, 기존 저장된 플랫폼하고 새로 저장할 플랫폼이 같은 경우)
-                        Log.d(TAG,"equals, getPlatform() : "+userTitleInfo.getPlatform()+", platform : "+platform);
+                        //Log.d(TAG,"equals, getPlatform() : "+userTitleInfo.getPlatform()+", platform : "+platform);
                         String tableName=platform.replace(" ","_");
                         titleDBHelper.modifyRecord(tableName, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(), genre, memo, Integer.valueOf(price), Integer.valueOf(rating), userTitleInfo.getId());
+                        //Log.d(TAG,"Selected Genre : "+genre);
                     }else{//타이틀 수정시에 플랫폼이 수정된 경우(다른 플랫폼의 테이블에 데이터 추가하고, 기존 테이블에 데이터 삭제한다.)
                         Log.d(TAG,"Not equals, getPlatform() : "+userTitleInfo.getPlatform()+", platform : "+platform);
                         String preTableName=userTitleInfo.getPlatform().replace(" ","_");
@@ -257,6 +260,8 @@ public class TitleDialogFragment extends DialogFragment {
                         titleDBHelper.createTable(tableName);
                         titleDBHelper.insertRecord(tableName, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(),genre,memo,Integer.valueOf(price),Integer.valueOf(rating),titleDBHelper.getNo(tableName),userTitleInfo.getId());
                         titleDBHelper.deleteRecord(preTableName, userTitleInfo.getId());
+                        //Log.d(TAG,"Selected Genre 2 : "+genre);
+
                     }
 
                     //if(sListener!=null) sListener.onSaveItem(titleName,userTitleInfo.getImagePath());

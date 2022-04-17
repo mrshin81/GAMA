@@ -478,9 +478,9 @@ public class NormalFragment extends Fragment {
                         }
                         tableName = Arrays.copyOf(tableNameAll, tableNameAll.length - nullCount);
 
-                        for (int j = 0; j < tableName.length; j++) {
+                        /*for (int j = 0; j < tableName.length; j++) {
                             Log.d(TAG, "tableName[" + j + "] : " + tableName[j]);
-                        }
+                        }*/
                         if(tableName.length==0){ //최초 실행시 tableName 배열의 길이가 0이라서 lentgh=0, index=0으로 프로그램 뻗는 것 방지하기 위함
                             String[] temp=new String[1];
                             temp[0]="";
