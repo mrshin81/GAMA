@@ -2,10 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/item_home"
         android:enabled="true"
-        android:icon="@drawable/avatar_icon"
+        android:icon="@drawable/home_button_on_nav"
         android:title="홈"/>
     <item android:id="@+id/item_statistic"
         android:enabled="true"
-        android:icon="@drawable/avatar_icon"
+        android:icon="@drawable/statistic_button_on_nav"
         android:title="통계"/>
+    <item android:id="@+id/item_setting"
+        android:enabled="true"
+        android:icon="@drawable/setting_button_on_nav"
+        android:title="설정"/>
 </menu>

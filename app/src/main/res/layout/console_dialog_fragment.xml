@@ -28,7 +28,7 @@
             android:background="@drawable/border_bottom"
             android:fontFamily="@font/notosans_bold"
             android:gravity="center"
-            android:text="내 콘솔 세부사항"
+            android:text="@string/my_console_text"
             android:textSize="20sp" />
     </FrameLayout>
 
@@ -38,8 +38,8 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/content_description_close_button"
         android:scaleType="centerInside"
-        android:text="닫기"
         app:layout_constraintBottom_toBottomOf="@id/h_guideline_10_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/v_guideline_80"
@@ -274,7 +274,9 @@
         app:layout_constraintBottom_toBottomOf="@id/h_guideline_58"
         app:layout_constraintEnd_toEndOf="@id/v_guideline_80"
         app:layout_constraintStart_toStartOf="@id/v_guideline_25"
-        app:layout_constraintTop_toTopOf="@id/h_guideline_50" />
+        app:layout_constraintTop_toTopOf="@id/h_guideline_50"
+        tools:ignore="TextContrastCheck"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/consoleBuyDateTextInConsoleDialogFragment"
@@ -304,7 +306,9 @@
         app:layout_constraintBottom_toBottomOf="@id/h_guideline_66"
         app:layout_constraintEnd_toEndOf="@id/v_guideline_80"
         app:layout_constraintStart_toStartOf="@id/v_guideline_25"
-        app:layout_constraintTop_toTopOf="@id/h_guideline_58" />
+        app:layout_constraintTop_toTopOf="@id/h_guideline_58"
+        tools:ignore="TextContrastCheck"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/consoleMemoTextInConsoleDialogFragment"
@@ -330,7 +334,8 @@
         app:layout_constraintBottom_toBottomOf="@id/h_guideline_18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/v_guideline_25"
-        app:layout_constraintTop_toTopOf="@id/h_guideline_10_2" />
+        app:layout_constraintTop_toTopOf="@id/h_guideline_10_2"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/consoleDescConstraintLayoutInConsoleDialogFragment"
@@ -357,6 +362,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
+                android:contentDescription="@string/content_description_console_image"
                 android:scaleType="fitXY"
                 android:src="@drawable/playstation5" />
         </androidx.cardview.widget.CardView>
@@ -368,7 +374,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
@@ -519,7 +525,7 @@
                     tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
 
-        </LinearLayout>
+        </TableLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton

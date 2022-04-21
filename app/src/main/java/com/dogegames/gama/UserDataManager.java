@@ -33,6 +33,7 @@ public class UserDataManager {
 
             out.writeObject(userInfo);
             out.close();
+            Commons.userName=userInfo.getUserName();
             Log.d(TAG,"SaveData Completed..");
         }catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -51,6 +52,7 @@ public class UserDataManager {
 
             userInfo= (UserInfo) in.readObject();
             in.close();
+            Commons.userName=userInfo.getUserName();
             Log.d(TAG,"LoadData Completed.. : "+userInfo);
 
         } catch (FileNotFoundException e) {
@@ -62,4 +64,6 @@ public class UserDataManager {
         }
         return userInfo;
     }
+
+
 }

@@ -1,12 +1,19 @@
 <resources>
     <string name="app_name">GAMA</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="playstation5">PlayStation 5</string>
     <string name="user_name_change_button_desc">사용자 변경 버튼</string>
     <string name="user_own_console_count_text">콘솔수</string>
     <string name="user_own_title_count_text">타이틀수</string>
-    <string name="user_spend_money_text">소요비용</string>
+    <string name="user_consume_price_text">소요비용</string>
+    <string name="unit_won">&#160;원</string>
+    <string name="unit_ea">&#160;개</string>
+    <string name="user_name_change_button_text">변&#160;경</string>
+    <string name="user_name_text">Unknown</string>
+
+    <!-- Console Dialog Fragment용 strings -->
+    <string name="my_console_text">내&#160;콘솔&#160;세부사항</string>
+
 
     <!-- Add Console Fragment용 strings -->
     <string name="console_title_text">콘솔 추가</string>
@@ -62,7 +69,15 @@
     <!-- Statistic Fragment용 strings -->
     <string name="statisticfragment_chart1_text">기종별&#160;타이틀수</string>
     <string name="statisticfragment_chart2_text">장르별&#160;타이틀수</string>
-    <string name="statisticfragment_chart3_text">소&#160;비&#160;금&#160;액</string>
+    <string name="statisticfragment_chart3_text">월&#160;별&#160;소&#160;비&#160;금&#160;액&#160;(최근&#160;1년간)</string>
+
+    <!-- Image Description용 strings -->
+    <string name="content_description_user_image">User Image</string>
+    <string name="content_description_console_count_image">Console Count Icon</string>
+    <string name="content_description_title_count_image">Title Count Icon</string>
+    <string name="content_description_price_image">Consume Price Icon</string>
+    <string name="content_description_close_button">Close</string>
+    <string name="content_description_console_image">Console Image</string>
 
 
 </resources>

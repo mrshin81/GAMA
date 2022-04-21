@@ -2,24 +2,16 @@ package com.dogegames.gama;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,7 +37,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class TitleDialogFragment extends DialogFragment {
@@ -80,6 +71,9 @@ public class TitleDialogFragment extends DialogFragment {
 
     boolean isModifyMode=false;
     TitleDBHelper titleDBHelper;
+
+    int titlePriceAfter=0;
+    int titlePriceBefore=0;
 
     public interface OnItemDeleteListener{
         void onDeleteItem();
@@ -144,6 +138,7 @@ public class TitleDialogFragment extends DialogFragment {
         cancelBTN=view.findViewById(R.id.cancelButtonInTitleDialogFragment);
         datePickerBTN=view.findViewById(R.id.showDatePickerForTitleDialogFragmentButton);
 
+        //Open시 불러온 데이터 각 UI에 표시하기
         String[] consoleItems=getContext().getResources().getStringArray(R.array.console_list);
         ((Commons)getActivity().getApplication()).setDropdown(consoleItems, consoleNameDropdown);
         consoleNameDropdown.setSelection(userTitleInfo.getConsoleNumber());
@@ -155,6 +150,12 @@ public class TitleDialogFragment extends DialogFragment {
         Log.d(TAG,"getGenreNumber() : "+userTitleInfo.getGenreNumber());
 
         gameTitleNameET.setText(userTitleInfo.getName());
+        gameMakerET.setText(userTitleInfo.getMaker());
+        memoET.setText(userTitleInfo.getMemo());
+        ratingET.setText(String.valueOf(userTitleInfo.getRating()));
+        buyPriceET.setText(String.valueOf(userTitleInfo.getPrice()));
+        buyDateET.setText(((Commons)getActivity().getApplication()).convertDateToString(userTitleInfo.getBuyDate()));
+
         //Glide.with(context).load(getImageFullPath(userTitleInfo.getImagePath())).into(gameTitleIV);
         Glide.with(this).load(getImageFullPath(userTitleInfo.getImagePath())).apply(RequestOptions.skipMemoryCacheOf(true)).apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)).into(gameTitleIV);
         gameTitleIV.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -182,6 +183,7 @@ public class TitleDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 setModifyMode(true);
+                titlePriceBefore=Integer.valueOf(buyPriceET.getText().toString());
             }
         });
 
@@ -261,8 +263,13 @@ public class TitleDialogFragment extends DialogFragment {
                         titleDBHelper.insertRecord(tableName, titleName, platform, makerName, buyDate, userTitleInfo.getImagePath(),genre,memo,Integer.valueOf(price),Integer.valueOf(rating),titleDBHelper.getNo(tableName),userTitleInfo.getId());
                         titleDBHelper.deleteRecord(preTableName, userTitleInfo.getId());
                         //Log.d(TAG,"Selected Genre 2 : "+genre);
-
                     }
+
+                    titlePriceAfter=Integer.valueOf(buyPriceET.getText().toString());
+                    int diffPrice=titlePriceAfter-titlePriceBefore;
+
+                    ((Commons)getActivity().getApplication()).modifyTotalTitleCountAndPrice(0,+1*diffPrice);
+                    ((MainActivity)getActivity()).displayUserInfo(); //수정 후에 User Status Bar를 갱신해준다.
 
                     //if(sListener!=null) sListener.onSaveItem(titleName,userTitleInfo.getImagePath());
                 }
@@ -283,6 +290,11 @@ public class TitleDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 String tableName= userTitleInfo.getPlatform().replace(" ","_");
                 titleDBHelper.deleteRecord(tableName, userTitleInfo.getId());
+
+                //user status bar 정보 수정
+                ((Commons)getActivity().getApplication()).modifyTotalTitleCountAndPrice(-1,-1*Integer.valueOf(buyPriceET.getText().toString()));
+                ((MainActivity)getActivity()).displayUserInfo(); //수정 후에 User Status Bar를 갱신해준다.
+
                 dismiss();
                 dListener.onDeleteItem();
             }

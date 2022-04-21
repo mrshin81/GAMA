@@ -20,7 +20,7 @@ public class UserInfo implements java.io.Serializable {
         this.totalPrice=0;
     }
 
-    UserInfo(String userName, int ownConsoleCount, int ownTitleCount, int totalPrice, int seletedConsoleNumber) {
+    UserInfo(String userName, int ownConsoleCount, int ownTitleCount, int totalPrice) {
         this.userName = userName;
         this.ownTitleCount = ownTitleCount;
         this.totalPrice = totalPrice;

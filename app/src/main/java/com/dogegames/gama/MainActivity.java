@@ -1,44 +1,30 @@
 package com.dogegames.gama;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,20 +36,18 @@ public class MainActivity extends AppCompatActivity {
 
     //각종 UI 객체 연결 변수
     EditText userNameET;
-    ImageButton searchBTN;
-    ImageButton userNameChangeBTN;
+    Button userNameChangeBTN;
     TextView totalTitleCountTV;
     TextView totalBuyPriceTV;
     TextView totalConsoleCountTV;
     BottomNavigationView bottomNavigationView;
+    ImageView userIV;
 
     boolean isUserNameEditable=false;
 
     UserDataManager userDataManager=null;
 
     static Context context;
-
-    ActivityResultLauncher<Intent> resultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,14 +64,17 @@ public class MainActivity extends AppCompatActivity {
 
         //XML 객체 연결
         userNameET=findViewById(R.id.userNameEditText);
-        searchBTN=findViewById(R.id.searchButton);
         userNameChangeBTN=findViewById(R.id.userNameChangeButton);
 
         totalBuyPriceTV=findViewById(R.id.totalBuyPriceTextView);
         totalTitleCountTV=findViewById(R.id.totalTitleCountTextView);
         totalConsoleCountTV=findViewById(R.id.totalConsoleCountTextView);
+        userIV=findViewById(R.id.userImageView);
 
         bottomNavigationView=findViewById(R.id.bottomNavView);
+
+        bottomNavigationView.setItemIconTintList(null);
+        bottomNavigationView.setBackgroundColor(Color.WHITE);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -105,17 +92,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        searchBTN.setOnClickListener(new View.OnClickListener() {
+        userIV.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                userDataManager.LoadData();
+            public void onClick(View v) {
+                Log.d(TAG,"User Image View Clicked");
+                //클릭시 image picker 뜨게 하고 이미지 선택시 이미지 변경하도록 한다.
             }
         });
+
         userNameChangeBTN.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 if(isUserNameEditable){
-                    UserInfo userInfo=new UserInfo(userNameET.getText().toString());
+                    String totalConsoleCountText=totalConsoleCountTV.getText().toString();
+                    String totalTitleCountText=totalTitleCountTV.getText().toString();
+                    String totalPriceText=totalBuyPriceTV.getText().toString();
+
+                    int totalConsoleCount=Integer.valueOf(totalConsoleCountText.substring(0,totalConsoleCountText.length()-2).replace(",",""));
+                    int totalTitleCount=Integer.valueOf(totalTitleCountText.substring(0,totalTitleCountText.length()-2).replace(",",""));
+                    int totalPrice=Integer.valueOf(totalPriceText.substring(0,totalPriceText.length()-2).replace(",",""));
+
+                    Log.d(TAG,"totalConsoleCount : "+totalConsoleCount);
+                    UserInfo userInfo=new UserInfo(userNameET.getText().toString(), totalConsoleCount,totalTitleCount,totalPrice);//Integer.valueOf(totalTitleCountTV.getText().toString()),Integer.valueOf(totalBuyPriceTV.getText().toString()));
                     userDataManager.SaveData(userInfo);
 
                     userNameET.setEnabled(false);
@@ -186,12 +184,33 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayUserInfo(){
         UserInfo userInfo=userDataManager.LoadData();
+        String won=getResources().getString(R.string.unit_won);
+        String ea=getResources().getString(R.string.unit_ea);
+
         if(userInfo!=null){
+            String titleCount= NumberFormat.getInstance().format(userInfo.getOwnTitleCount());
+            String totalPrice= NumberFormat.getInstance().format(userInfo.getTotalPrice());
+            String consoleCount= NumberFormat.getInstance().format(userInfo.getOwnConsoleCount());
+
             userNameET.setText(userInfo.getUserName());
-            totalTitleCountTV.setText(String.valueOf(userInfo.getOwnTitleCount()));
-            totalBuyPriceTV.setText(String.valueOf(userInfo.getTotalPrice()));
-            totalConsoleCountTV.setText(String.valueOf(userInfo.getOwnConsoleCount()));
+            totalTitleCountTV.setText(titleCount+ea);
+            totalBuyPriceTV.setText(totalPrice+won);
+            totalConsoleCountTV.setText(consoleCount+ea);
+
+            Commons.totalConsoleCount=userInfo.getOwnConsoleCount();
+            Commons.totalTitleCount=userInfo.getOwnTitleCount();
+            Commons.totalConsumePrice=userInfo.getTotalPrice();
+
             Log.d(TAG,"userInfo : "+String.valueOf(userInfo.getOwnTitleCount()));
+        }else{
+            userNameET.setText("Unknown");
+            totalTitleCountTV.setText(String.valueOf(0)+ea);
+            totalBuyPriceTV.setText(String.valueOf(0)+won);
+            totalConsoleCountTV.setText(String.valueOf(0)+ea);
+
+            Commons.totalConsoleCount=0;
+            Commons.totalTitleCount=0;
+            Commons.totalConsumePrice=0;
         }
 
     }

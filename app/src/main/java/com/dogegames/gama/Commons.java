@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.Display;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -36,6 +34,38 @@ import java.util.Date;
 public class Commons extends Application {
 
     static public String selectedConsoleName;
+    static public int totalConsoleCount;
+    static public int totalTitleCount;
+    static public int totalConsumePrice;
+    static public String userName;
+
+    //콘솔을 추가하거나, 삭제하거나, 수정할때 전체 콘솔수, 소요비용을 수정한다.
+    public void modifyTotalConsoleCountAndPrice(int count, int price){
+        totalConsoleCount=totalConsoleCount+count;
+        totalConsumePrice=totalConsumePrice+price;
+        SaveUserInfo(totalConsoleCount,totalTitleCount,totalConsumePrice);
+    }
+
+    public void SaveUserInfo(int totalConsoleCount, int totalTitleCount, int totalConsumePrice){
+        UserInfo userInfo=new UserInfo();
+        userInfo.setUserName(userName);
+        userInfo.setOwnConsoleCount(totalConsoleCount);
+        userInfo.setTotalPrice(totalConsumePrice);
+        userInfo.setOwnTitleCount(totalTitleCount);
+        SaveUserInfo(userInfo);
+    }
+
+    public void SaveUserInfo(UserInfo userInfo){
+        UserDataManager userDataManager=new UserDataManager(this);
+        userDataManager.SaveData(userInfo);
+    }
+
+    //타이틀을 추가하거나, 삭제하거나, 수정할때 전체 콘솔수, 소요비용을 수정한다.
+    public void modifyTotalTitleCountAndPrice(int count, int price){
+        totalTitleCount=totalTitleCount+count;
+        totalConsumePrice=totalConsumePrice+price;
+        SaveUserInfo(totalConsoleCount,totalTitleCount,totalConsumePrice);
+    }
 
     public void saveImageViewToPNG(ImageView imageView, String fileName){
         BitmapDrawable drawable=(BitmapDrawable) imageView.getDrawable();

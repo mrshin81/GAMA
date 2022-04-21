@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -197,6 +194,10 @@ public class AddConsoleFragment extends Fragment {
         Log.d(TAG,"getSelectedItem : "+selectedPlatform);
 
         titleDBHelper.createTable(selectedPlatform);
+
+        //User Status Bar의 전체 콘솔수, 소요비용을 수정한다.
+        ((Commons)getActivity().getApplication()).modifyTotalConsoleCountAndPrice(+1,+1*Integer.valueOf(price));
+        ((MainActivity)getActivity()).displayUserInfo(); //수정 후에 User Status Bar를 갱신해준다.
     }
 
 

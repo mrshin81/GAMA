@@ -9,7 +9,7 @@ public class UserTitleInfo {
     String name;
     String maker;
     String platform;
-    Date launchDate;
+    Date buyDate;
     String imagePath;
     String genre;
     String memo;
@@ -23,7 +23,7 @@ public class UserTitleInfo {
         this.platform=null;
         this.imagePath=null;
         this.maker=null;
-        this.launchDate=null;
+        this.buyDate=null;
         this.genre=null;
         this.memo=null;
         this.price=0;
@@ -37,19 +37,19 @@ public class UserTitleInfo {
         this.platform=null;
         this.imagePath="plus_icon_square_dotted_gray";
         this.maker=null;
-        this.launchDate=null;
+        this.buyDate=null;
         this.genre=null;
         this.memo=null;
         this.price=0;
         this.rating=0;
     }
 
-    UserTitleInfo(Context context, String name, String platform, String maker, Date launchDate, String imagePath, String genre, String memo, int price, int rating){
+    UserTitleInfo(Context context, String name, String platform, String maker, Date buyDate, String imagePath, String genre, String memo, int price, int rating){
         this.context=context;
         this.name=name;
         this.platform=platform;
         this.maker=maker;
-        this.launchDate=launchDate;
+        this.buyDate=buyDate;
         this.imagePath=imagePath;
         this.genre=genre;
         this.memo=memo;
@@ -81,12 +81,12 @@ public class UserTitleInfo {
         return maker;
     }
 
-    public void setLaunchDate(Date launchDate){
-        this.launchDate=launchDate;
+    public void setBuyDate(Date buyDate){
+        this.buyDate=buyDate;
     }
 
-    public Date getLaunchDate(){
-        return launchDate;
+    public Date getBuyDate(){
+        return buyDate;
     }
 
     public void setImagePath(String imagePath){

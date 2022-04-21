@@ -3,13 +3,9 @@ package com.dogegames.gama;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -31,17 +25,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -514,7 +502,7 @@ public class NormalFragment extends Fragment {
                                     e.printStackTrace();
                                     date = new Date();
                                 }
-                                userTitleInfo[k].setLaunchDate(date);
+                                userTitleInfo[k].setBuyDate(date);
                                 userTitleInfo[k].setImagePath(cursor.getString(5));
                                 userTitleInfo[k].setGenre(cursor.getString(6));
                                 userTitleInfo[k].setMemo(cursor.getString(7));
@@ -556,7 +544,7 @@ public class NormalFragment extends Fragment {
                                 e.printStackTrace();
                                 date=new Date();
                             }
-                            userTitleInfo[i].setLaunchDate(date);
+                            userTitleInfo[i].setBuyDate(date);
                             userTitleInfo[i].setImagePath(cursor.getString(5));
                             userTitleInfo[i].setGenre(cursor.getString(6));
                             userTitleInfo[i].setMemo(cursor.getString(7));
@@ -624,7 +612,7 @@ public class NormalFragment extends Fragment {
                             e.printStackTrace();
                             date = new Date();
                         }
-                        userTitleInfo[i].setLaunchDate(date);
+                        userTitleInfo[i].setBuyDate(date);
                         userTitleInfo[i].setImagePath(cursor.getString(5));
                         userTitleInfo[i].setGenre(cursor.getString(6));
                         userTitleInfo[i].setMemo(cursor.getString(7));
@@ -749,7 +737,7 @@ public class NormalFragment extends Fragment {
                         e.printStackTrace();
                         date=new Date();
                     }
-                    userTitleInfo.setLaunchDate(date);
+                    userTitleInfo.setBuyDate(date);
                     userTitleInfo.setImagePath(cursor.getString(5));
                     userTitleInfo.setGenre(cursor.getString(6));
                     userTitleInfo.setMemo(cursor.getString(7));

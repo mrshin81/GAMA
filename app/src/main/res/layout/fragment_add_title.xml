@@ -16,11 +16,11 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/v_guideline_addtitle_32"
+        android:id="@+id/v_guideline_addtitle_34"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.32" />
+        app:layout_constraintGuide_percent="0.34" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/v_guideline_addtitle_20"
@@ -182,10 +182,11 @@
         android:id="@+id/closeAddTitleFragmentButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:background="@android:color/transparent"
         android:padding="4dp"
         android:scaleType="centerInside"
-        android:src="@drawable/close_button_blue_square"
+        android:src="@drawable/close_button_red"
         app:layout_constraintBottom_toBottomOf="@id/h_guideline_addtitle_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/v_guideline_addtitle_80"
@@ -195,12 +196,15 @@
         android:id="@+id/imagePickerButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:drawable/screen_background_light_transparent"
         android:padding="4dp"
         android:scaleType="centerInside"
         android:src="@drawable/camera_icon"
         app:layout_constraintBottom_toBottomOf="@id/h_guideline_addtitle_42"
         app:layout_constraintEnd_toEndOf="@id/v_guideline_addtitle_50"
-        app:layout_constraintStart_toStartOf="@id/v_guideline_addtitle_32"
+        app:layout_constraintStart_toStartOf="@id/v_guideline_addtitle_34"
         app:layout_constraintTop_toTopOf="@id/h_guideline_addtitle_34" />
 
     <ImageButton
@@ -410,7 +414,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="#CACACA"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/date_picker_3" />
     </LinearLayout>

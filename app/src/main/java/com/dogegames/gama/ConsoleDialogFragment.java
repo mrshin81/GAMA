@@ -3,11 +3,8 @@ package com.dogegames.gama;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ConsoleDialogFragment extends DialogFragment {
     final static String TAG="ConsoleDialogFragment";
@@ -69,6 +62,9 @@ public class ConsoleDialogFragment extends DialogFragment {
     ConsoleDBHelper consoleDBHelper;
 
     boolean isModifyMode=false;
+
+    int consolePriceBefore=0;
+    int consolePriceAfter=0;
 
 
     public static ConsoleDialogFragment newInstance(Context context1, UserConsoleInfo userConsoleInfo1){
@@ -129,6 +125,7 @@ public class ConsoleDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 if(!isModifyMode){
                     setModifyMode(true);
+                    consolePriceBefore=Integer.valueOf(consoleBuyPriceET.getText().toString());
                     //Toast.makeText(getOwnerActivity(), .LENGTH_LONG);
                     //Log.d(TAG,"ID : "+userConsoleInfo.getId());
                 }
@@ -151,6 +148,15 @@ public class ConsoleDialogFragment extends DialogFragment {
                     setModifyMode(false);
                     consoleDBHelper.modifyRecord(ConsoleDBHelper.TABLE_NAME, consoleNameDropdown.getSelectedItem().toString(),consoleImagePath[consoleNameDropdown.getSelectedItemPosition()], Integer.valueOf(consoleBuyPriceET.getText().toString()),((Commons)getActivity().getApplication()).convertStringToDate(consoleBuyDateET.getText().toString()),consoleMemoET.getText().toString(), userConsoleInfo.getId());
                     sListener.onSaveItem(consoleNameDropdown.getSelectedItem().toString(), consoleImagePath[consoleNameDropdown.getSelectedItemPosition()]);
+
+                    //price가 변경되면 그 값을 빼거나 더해주거나 해야하므로 최초 price값과 수정된 price값을 비교해야 한다.
+                    //price 비교하는 코드...
+                    consolePriceAfter=Integer.valueOf(consoleBuyPriceET.getText().toString());
+                    int diffPrice=consolePriceAfter-consolePriceBefore;
+
+                    //User Status Bar의 전체 콘솔수, 소요비용을 수정한다.
+                    ((Commons)getActivity().getApplication()).modifyTotalConsoleCountAndPrice(0,+1*diffPrice);
+                    ((MainActivity)getActivity()).displayUserInfo(); //수정 후에 User Status Bar를 갱신해준다.
                 }
             }
         });
@@ -168,6 +174,11 @@ public class ConsoleDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 consoleDBHelper.deleteRecord(ConsoleDBHelper.TABLE_NAME, userConsoleInfo.getId());
+
+                //user status bar 정보 수정
+                ((Commons)getActivity().getApplication()).modifyTotalConsoleCountAndPrice(-1,-1*Integer.valueOf(consoleBuyPriceET.getText().toString()));
+                ((MainActivity)getActivity()).displayUserInfo(); //수정 후에 User Status Bar를 갱신해준다.
+
                 dismiss();
                 mListener.onDeleteItem();
             }
